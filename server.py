@@ -85,8 +85,8 @@ class ScoutServer(object):
             <div style="max-width: 1000px; margin: 0 auto;">
                 <br>
                 <div style="vertical-align:top; float:left; width: 300px;">
-                    <h1>PiScout</h1>
-                    <h2>FRC Team 2067/238</h2>
+                    <h1>PiScout 2.0</h1>
+                    <h2>FRC Team 2067</h2>
                     <br><br>
                     <p class="main">Search Team</p>
                     <form method="get" action="team">
@@ -134,7 +134,6 @@ class ScoutServer(object):
                     <form method="get" action="matches">
                         <select class="fieldsm" name="n">
                           <option value="2067">2067 matches</option>
-                          <option value="238">238 matches</option>
                           <option value="0">All matches</option>
                         </select>
                         <button class="submit" type="submit">Submit</button>
@@ -149,11 +148,11 @@ class ScoutServer(object):
                     <thead><tr>
                         <th>Team</th>
                         <th>APR</th>
-                        <th>Auto Gears</th>
-                        <th>Tele Gears</th>
-                        <th>Total Gears</th>
-                        <th>Auto kPa</th>
-                        <th>Tele kPa</th>
+                        <th>Auto Switch</th>
+                        <th>Auto Scale</th>
+                        <th>Tele Switch</th>
+                        <th>Tele Scale</th>
+                        <th>Tele Exch</th>
                         <th>Climb</th>
                         <th>Defense</th>
                     </tr></thead>
@@ -1286,7 +1285,7 @@ class ScoutServer(object):
                 raise Exception #freaking stupid laziness
         except:
             #stupid lazy solution for local mode
-            a = requests.get('http://127.0.0.1:8000/submit?data=json')
+            a = requests.get('http://127.0.0.1:8001/submit?data=json')
         return a
     
     def database_exists(self, event):
@@ -1639,7 +1638,7 @@ conf = {
          'tools.staticdir.dir': './public'
      },
     'global': {
-        'server.socket_port': 8000
+        'server.socket_port': 8001
     }
 }
 
