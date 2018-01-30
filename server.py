@@ -109,14 +109,9 @@ class ScoutServer(object):
                     <form method="post" action="/">
                         <select class="fieldsm" name="e">
                           <option id="2017ctss" value="2017ctss">Suffield Shakedown</option>
-                          <option id="2017wkzro" value="2017wkzro">Week Zero</option>
-                          <option id="2017nhgrs" value="2017nhgrs">Granite State District Event</option>
-                          <option id="2017ctwat" value="2017ctwat">Waterbury District Event</option>
-                          <option id="2017mabos" value="2017mabos">Greater Boston District Event</option>
-                          <option id="2017nhbed" value="2017nhbed">Southern New Hampshire District Event</option>
-                          <option id="2017cthar" value="2017cthar">Hartford District Event</option>
-                          <option id="2017necmp" value="2017necmp">NE District Championship</option>
-						  <option id="2017dar" value="2017dar">Darwin @ Championship</option>
+                          <option id="2017wkzro" value="2017wkzro">Waterbury District Event</option>
+                          <option id="2017nhgrs" value="2017nhgrs">Fairfield District Event</option>
+                          <option id="2017ctwat" value="2017ctwat">Hartford District Event</option>
                         </select>
                         <button class="submit" type="submit">Submit</button>
                     </form>

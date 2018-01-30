@@ -7,6 +7,7 @@ import ctypes
 import requests
 import server
 from threading import Thread
+import csv
 from server import CURRENT_EVENT
 import sqlite3 as sql
 
@@ -24,10 +25,9 @@ class PiScout:
         print('PiScout Starting')
         self.sheet = None;
         self.display = None;
-        self.data = []
-        self.labels = []
-        self.shift = 0
-
+        self.data = [[]]
+        self.labels = ["Team", "Match", "Auto Switch", "Auto Scale", "Auto Exchange", "Auto Cross", "Tele Switch", "Tele Scale" , "Tele Exchange" ,"Climb","Ramp","Attempt Climb" ,"Defense", "Tipped", "Notes"]
+        
         Thread(target=server.start).start()  # local database server
         f = set(os.listdir("Files"))
         while True:
@@ -36,89 +36,45 @@ class PiScout:
             added = files - f  # check if any files were added (if first iteration, added = files)
             f = files  # will hold onto this value for the next iteration
             for file in added:
-                print('hit')
-                self.submit()
-
-                #if '.txt' in file:
-                    #self.loadsheet("Sheets/" + file) # this line processes the sheet....dont think i need this?
-                    #main(self)  # call the main loop with this PiScout object as an argument
-
-    # Shifts all fields down by amount
-    # Useful for when there are two (or more) matches on one sheet of paper
-    # After reading the first match, shift down and read again
-    def shiftDown(self, amount):
-        self.shift = amount
-
-
-    # Define a new boolean field at a given location
-    # Returns whether or not the grid unit is shaded
-    def boolfield(self, location):
-        loc = self.parse(location)
-        #cv2.rectangle(self.display, (loc[0] * 16, loc[1] * 16), (loc[0] * 16 + 16, loc[1] * 16 + 16), (0, 50, 150), 3)
-        return int(self.getvalue(loc) < 45000)
-
-    # Define a new range field at a given location
-    # This field spans across multiple grid units
-    # Returns the shaded value, or 0 if none is shaded
-    def rangefield(self, startlocation, startval, endval):
-        loc = self.parse(startlocation)
-        end = loc[0] - startval + endval + 1  # grid coordinate where the rangefield ends
-        #cv2.rectangle(self.display, (loc[0] * 16, loc[1] * 16), (end * 16, loc[1] * 16 + 16), (0, 50, 150), 3)
-        values = [self.getvalue((val, loc[1])) for val in range(loc[0], end)]
-        min = np.argmin(values)
-        if values[min] < 45000:
-            return startval + min
-        return 0
-
-    # Define a new count field at a given location
-    # This field spans across multiple grid units
-    # Returns the highest shaded value, or 0 if none are shaded
-    def countfield(self, startlocation, endlocation):
-        loc = self.parse(startlocation)
-        end = self.parse(endlocation)[0] + 1
-        #cv2.rectangle(self.display, (loc[0] * 16, loc[1] * 16), (end * 16, loc[1] * 16 + 16), (0, 50, 150), 3)
-        values = [self.getvalue((val, loc[1])) for val in range(loc[0], end)]
-        for el, box in enumerate(values[::-1]):
-            if box < 45000:
-                return len(values) - el
-        return 0
+                if '.csv' in file:
+                    print('hit')
+                    main(self, file)
 
     # Adds a data entry into the data dictionary
-    def set(self, name, contents):
+    def set(self, contents):
         self.data.append(contents)
-        self.labels.append(name)
-
     # Opens the GUI, preparing the data for submission
+
     def submit(self):
-        # if self.data[0] == 0:
-        #     print("Found an empty match, skipping")
-        #     self.data = []
-        #     self.labels = []
-        #     return
-        #
-        # datapath = 'data_' + CURRENT_EVENT + '.db'
-        # conn = sql.connect(datapath)
-        # cursor = conn.cursor()
-        # history = cursor.execute('SELECT * FROM scout WHERE d0=? AND d1=?',
-        #                          (str(self.data[0]), str(self.data[1]))).fetchall()
-        # if history:
-        #     print("Already processed this match, skipping")
-        #     self.data = []
-        #     self.labels = []
-        #     return
+        if self.data[0] == 0:
+            print("Found an empty match, skipping")
+            self.data = []
+            self.labels = []
+            return
+
+        datapath = 'data_' + CURRENT_EVENT + '.db'
+        conn = sql.connect(datapath)
+        cursor = conn.cursor()
+        history = cursor.execute('SELECT * FROM scout WHERE d0=? AND d1=?',
+                                 (str(self.data[0]), str(self.data[1]))).fetchall()
+        if history:
+            print("Already processed this match, skipping")
+            self.data = []
+            self.labels = []
+            return
 
         # the following block opens the GUI for piscout, this code shouldn't need to change
         print("Found a new file, opening")
-        # output = ''
-        # assert len(self.labels) == len(self.data)
-        # for a in range(len(self.data)):
-        #     output += self.labels[a] + "=" + str(self.data[a]) + '\n'
+        output = ''
+        assert len(self.labels) == len(self.data)
+        for a in range(len(self.data)):
+            output += self.labels[a] + "=" + str(self.data[a]) + '\n'
         fig = plt.figure('PiScout')
         fig.subplots_adjust(left=0, right=0.6)
         plt.subplot(111)
         plt.imshow(self.display)
         plt.title('File')
-        # plt.text(600, 784, output, fontsize=12)
+        plt.text(600, 784, output, fontsize=12)
         upload = Button(plt.axes([0.68, 0.31, 0.15, 0.07]), 'Upload Data')
         upload.on_clicked(self.upload)
         save = Button(plt.axes([0.68, 0.24, 0.15, 0.07]), 'Save Data Offline')
@@ -145,7 +101,8 @@ class PiScout:
         with open("queue.txt", "a+") as file:
             file.write(str(self.data) + '\n')
         plt.close()
-        requests.post("http://127.0.0.1:8000/submit", data={'event': server.CURRENT_EVENT, 'data': str(self.data)})
+        for row in self.data:
+            requests.post("http://127.0.0.1:8000/submit", data={'event': server.CURRENT_EVENT, 'data': str(self.data)})
 
     # Invoked by the "Upload Data" button
     # Uploads all data (including queue) to the online database
