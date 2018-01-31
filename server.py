@@ -16,7 +16,6 @@ DEFAULT_MODE = 'averages'
 class ScoutServer(object):
     @cherrypy.expose
     def index(self, m='', e=''):
-        
         #First part is to handle event selection. When the event is changed, a POST request is sent here.
         illegal = '' #i competely forget what this variable does, just leave it
         if e != '':
@@ -108,10 +107,7 @@ class ScoutServer(object):
                      <p class="main">Change Event</p>
                     <form method="post" action="/">
                         <select class="fieldsm" name="e">
-                          <option id="2017ctss" value="2017ctss">Suffield Shakedown</option>
-                          <option id="2017wkzro" value="2017wkzro">Waterbury District Event</option>
-                          <option id="2017nhgrs" value="2017nhgrs">Fairfield District Event</option>
-                          <option id="2017ctwat" value="2017ctwat">Hartford District Event</option>
+                          <option id="2018test" value="2018test">Test</option>
                         </select>
                         <button class="submit" type="submit">Submit</button>
                     </form>
@@ -318,7 +314,7 @@ class ScoutServer(object):
 
                         // GRAPH
                         graph = new AmCharts.AmGraph();
-                        graph.title = "Auto Shoot Points";
+                        graph.title = "Auto Switch";
                         graph.valueAxis = valueAxis;
                         graph.type = "smoothedLine"; // this line makes the graph smoothed line.
                         graph.lineColor = "#637bb6";
@@ -328,12 +324,12 @@ class ScoutServer(object):
                         graph.bulletBorderAlpha = 1;
                         graph.bulletBorderThickness = 2;
                         graph.lineThickness = 2;
-                        graph.valueField = "autoshoot";
-                        graph.balloonText = "Auto Shoot Points:<br><b><span style='font-size:14px;'>[[value]]</span></b>";
+                        graph.valueField = "autoswitch";
+                        graph.balloonText = "Auto Switch:<br><b><span style='font-size:14px;'>[[value]]</span></b>";
                         chart.addGraph(graph);
 
                         graph2 = new AmCharts.AmGraph();
-                        graph2.title = "Auto Gears";
+                        graph2.title = "Auto Scale";
                         graph2.valueAxis = valueAxis2;
                         graph2.type = "smoothedLine"; // this line makes the graph smoothed line.
                         graph2.lineColor = "#187a2e";
@@ -343,12 +339,12 @@ class ScoutServer(object):
                         graph2.bulletBorderAlpha = 1;
                         graph2.bulletBorderThickness = 2;
                         graph2.lineThickness = 2;
-                        graph2.valueField = "autogears";
-                        graph2.balloonText = "Auto Gears:<br><b><span style='font-size:14px;'>[[value]]</span></b>";
+                        graph2.valueField = "autoscale";
+                        graph2.balloonText = "Auto Scale:<br><b><span style='font-size:14px;'>[[value]]</span></b>";
                         chart.addGraph(graph2);
 
                         graph3 = new AmCharts.AmGraph();
-                        graph3.title = "Shoot Points";
+                        graph3.title = "Tele Switch";
                         graph3.valueAxis = valueAxis;
                         graph3.type = "smoothedLine"; // this line makes the graph smoothed line.
                         graph3.lineColor = "#FF6600";
@@ -358,13 +354,13 @@ class ScoutServer(object):
                         graph3.bulletBorderAlpha = 1;
                         graph3.bulletBorderThickness = 2;
                         graph3.lineThickness = 2;
-                        graph3.valueField = "shoot";
-                        graph3.balloonText = "Shoot Points:<br><b><span style='font-size:14px;'>[[value]]</span></b>";
+                        graph3.valueField = "telesw";
+                        graph3.balloonText = "Tele Switch:<br><b><span style='font-size:14px;'>[[value]]</span></b>";
                         chart.addGraph(graph3);
 
                         graph4 = new AmCharts.AmGraph();
                         graph4.valueAxis = valueAxis2;
-                        graph4.title = "Gears";
+                        graph4.title = "Tele Scale";
                         graph4.type = "smoothedLine"; // this line makes the graph smoothed line.
                         graph4.lineColor = "#FCD202";
                         graph4.bullet = "round";
@@ -373,13 +369,13 @@ class ScoutServer(object):
                         graph4.bulletBorderAlpha = 1;
                         graph4.bulletBorderThickness = 2;
                         graph4.lineThickness = 2;
-                        graph4.valueField = "gears";
-                        graph4.balloonText = "Gears:<br><b><span style='font-size:14px;'>[[value]]</span></b>";
+                        graph4.valueField = "telesc";
+                        graph4.balloonText = "Tele Scale:<br><b><span style='font-size:14px;'>[[value]]</span></b>";
                         chart.addGraph(graph4);
 
                         graph5 = new AmCharts.AmGraph();
                         graph5.valueAxis = valueAxis2;
-                        graph5.title = "Dropped Gears";
+                        graph5.title = "Tele Exchange";
                         graph5.type = "smoothedLine"; // this line makes the graph smoothed line.
                         graph5.lineColor = "#FF0000";
                         graph5.bullet = "round";
@@ -388,8 +384,8 @@ class ScoutServer(object):
                         graph5.bulletBorderAlpha = 1;
                         graph5.bulletBorderThickness = 2;
                         graph5.lineThickness = 2;
-                        graph5.valueField = "geardrop";
-                        graph5.balloonText = "Dropped Gears:<br><b><span style='font-size:14px;'>[[value]]</span></b>";
+                        graph5.valueField = "teleexch";
+                        graph5.balloonText = "Tele Exchange:<br><b><span style='font-size:14px;'>[[value]]</span></b>";
                         chart.addGraph(graph5);
                         
                         // CURSOR
@@ -429,11 +425,11 @@ class ScoutServer(object):
                     </div>
                     <div id="stats">
                         <p class="statbox" style="font-weight:bold">Average match:</p>
-                        <p class="statbox">Auto Gears: {3}</p>
-                        <p class="statbox">Teleop Gears: {4}</p>
-                        <p class="statbox">Dropped Gears: {5}</p>
-                        <p class="statbox">Auto Shoot Points: {6}</p>
-                        <p class="statbox">Teleop Shoot Points: {7}</p>
+                        <p class="statbox">Auto Switch: {3}</p>
+                        <p class="statbox">Auto Scale: {4}</p>
+                        <p class="statbox">Tele Switch: {5}</p>
+                        <p class="statbox">Tele Scale: {6}</p>
+                        <p class="statbox">Tele Exchange: {7}</p>
                         <p class="statbox">Endgame Points: {8}</p>
                     </div>
                 </div>
@@ -444,8 +440,8 @@ class ScoutServer(object):
                     <thead><tr>
                         <th>Match</th>
                         <th>Auto</th>
-                        <th>Gears</th>
-                        <th>Shooting</th>
+                        <th>Cubes</th>
+                        <th>End Game</th>
                         <th>Other</th>
                         <th>Flag</th>
                         <th>Edit</th>
@@ -587,11 +583,11 @@ class ScoutServer(object):
                             </div>
                     <div id="stats">
                         <p class="statbox" style="font-weight:bold">Average match:</p>
-                        <p class="statbox">Auto Gears: {2}</p>
-                        <p class="statbox">Teleop Gears: {3}</p>
-                        <p class="statbox">Dropped Gears: {4}</p>
-                        <p class="statbox">Auto Shoot Points: {5}</p>
-                        <p class="statbox">Teleop Shoot Points: {6}</p>
+                        <p class="statbox">Auto Switch: {2}</p>
+                        <p class="statbox">Auto Scale: {3}</p>
+                        <p class="statbox">Tele Switch: {4}</p>
+                        <p class="statbox">Tele Scale: {5}</p>
+                        <p class="statbox">Tele Exchange: {6}</p>
                         <p class="statbox">Endgame Points: {7}</p>
                     </div>
                         </div>'''.format(n, *entry[1:]) #unpack the elements

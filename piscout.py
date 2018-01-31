@@ -27,7 +27,7 @@ class PiScout:
         self.display = None;
         self.data = [[]]
         self.labels = ["Team", "Match", "Auto Switch", "Auto Scale", "Auto Exchange", "Auto Cross", "Tele Switch", "Tele Scale" , "Tele Exchange" ,"Climb","Ramp","Attempt Climb" ,"Defense", "Tipped", "Notes"]
-        
+
         Thread(target=server.start).start()  # local database server
         f = set(os.listdir("Files"))
         while True:
@@ -35,6 +35,7 @@ class PiScout:
             files = set(os.listdir("Files"))  # grabs all file names as a set
             added = files - f  # check if any files were added (if first iteration, added = files)
             f = files  # will hold onto this value for the next iteration
+            print("hit1")
             for file in added:
                 if '.csv' in file:
                     print('hit')
