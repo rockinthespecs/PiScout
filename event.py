@@ -1,1 +1,1 @@
-CURRENT_EVENT = 'test'
+CURRENT_EVENT = '2017dar'

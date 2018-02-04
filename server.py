@@ -8,7 +8,6 @@ import math
 from statistics import mode
 from ipaddress import IPV6LENGTH
 from event import CURRENT_EVENT
-
 # Update this value before every event
 # Use the event codes given by thebluealliance
 DEFAULT_MODE = 'averages'
@@ -187,23 +186,23 @@ class ScoutServer(object):
         for e in entries:
             # Important: the index of e refers to the number of the field set in main.py
             # For example e[1] gets value #1 from main.py
-            dp = {"match": e[2], "autoshoot":0, "shoot":0, "autogears":0, "gears":0, "geardrop":0}
+            dp = {"match": e[2], "autoshoot":0, "shoot":0, "autocubes":0, "teleswitch":0, "cubedrop":0}
             a = ''
             a += 'baseline, ' if e[6] else ''
-            a += 'side try, ' if e[19] else ''
-            a += 'center try, ' if e[20] else ''
+            a += 'switch try, ' if e[19] else ''
+            a += 'scale try, ' if e[20] else ''
             a += 'side peg, ' if e[21] else ''
             a += 'center peg, ' if e[22] else ''
-            dp['autogears'] += e[5]
+            dp['autocubes'] += e[5]
             a += str(e[7]) + 'x low goal, ' if e[7] else ''
             a += str(e[8]) + 'x high goal, ' if e[8] else ''
             dp['autoshoot'] += e[7]/3 + e[8]
 
             d = ''
-            d += str(e[13]) + 'x gears, ' if e[13] else ''
-            d += str(e[14]) + 'x gears dropped, ' if e[14] else ''
-            dp['gears'] += e[13]
-            dp['geardrop'] += e[14]
+            d += str(e[13]) + 'x cubes, ' if e[13] else ''
+            d += str(e[14]) + 'x cubes dropped, ' if e[14] else ''
+            dp['teleswitch'] = e[13]
+            dp['cubedrop'] += e[14]
 
             sh = ''
             sh += str(e[15]) + 'x low goal, ' if e[15] else ''
@@ -329,7 +328,7 @@ class ScoutServer(object):
                         chart.addGraph(graph);
 
                         graph2 = new AmCharts.AmGraph();
-                        graph2.title = "Auto Scale";
+                        graph2.title = "Auto Cubes";
                         graph2.valueAxis = valueAxis2;
                         graph2.type = "smoothedLine"; // this line makes the graph smoothed line.
                         graph2.lineColor = "#187a2e";
@@ -339,7 +338,7 @@ class ScoutServer(object):
                         graph2.bulletBorderAlpha = 1;
                         graph2.bulletBorderThickness = 2;
                         graph2.lineThickness = 2;
-                        graph2.valueField = "autoscale";
+                        graph2.valueField = "autocubes";
                         graph2.balloonText = "Auto Scale:<br><b><span style='font-size:14px;'>[[value]]</span></b>";
                         chart.addGraph(graph2);
 
@@ -354,7 +353,7 @@ class ScoutServer(object):
                         graph3.bulletBorderAlpha = 1;
                         graph3.bulletBorderThickness = 2;
                         graph3.lineThickness = 2;
-                        graph3.valueField = "telesw";
+                        graph3.valueField = "teleswitch";
                         graph3.balloonText = "Tele Switch:<br><b><span style='font-size:14px;'>[[value]]</span></b>";
                         chart.addGraph(graph3);
 
@@ -369,7 +368,7 @@ class ScoutServer(object):
                         graph4.bulletBorderAlpha = 1;
                         graph4.bulletBorderThickness = 2;
                         graph4.lineThickness = 2;
-                        graph4.valueField = "telesc";
+                        graph4.valueField = "telescale";
                         graph4.balloonText = "Tele Scale:<br><b><span style='font-size:14px;'>[[value]]</span></b>";
                         chart.addGraph(graph4);
 
@@ -603,20 +602,20 @@ class ScoutServer(object):
             for index, e in enumerate(entries):
             # Important: the index of e refers to the number of the field set in main.py
                 # For example e[1] gets value #1 from main.py
-                dp = {"autoshoot":0, "shoot":0, "autogears":0, "gears":0, "geardrop":0}
+                dp = {"autoswitch":0, "shoot":0, "autocubes":0, "teleswitch":0, "telescale":0}
                 a = ''
                 a += 'baseline, ' if e[6] else ''
-                a += str(e[5]) + 'x gears, ' if e[5] else ''
-                dp['autogears'] += e[5]
+                a += str(e[5]) + 'x autocubes, ' if e[5] else ''
+                dp['autocubes'] += e[5]
                 a += str(e[7]) + 'x low goal, ' if e[7] else ''
                 a += str(e[8]) + 'x high goal, ' if e[8] else ''
                 dp['autoshoot'] += e[7]/3 + e[8]
     
                 d = ''
-                d += str(e[13]) + 'x gears, ' if e[13] else ''
-                d += str(e[14]) + 'x gears dropped, ' if e[14] else ''
-                dp['gears'] += e[13]
-                dp['geardrop'] += e[14]
+                d += str(e[13]) + 'x telecubes, ' if e[13] else ''
+                d += str(e[14]) + 'x cubes dropped, ' if e[14] else ''
+                dp['teleswitch'] += e[13]
+                dp['telescale'] += e[14]
     
                 sh = ''
                 sh += str(e[15]) + 'x low goal, ' if e[15] else ''
@@ -847,12 +846,12 @@ class ScoutServer(object):
                             </div>
                             <div id="stats">
                                 <p class="statbox" style="font-weight:bold">Average match:</p>
-                                <p class="statbox">Auto Gears: {2}</p>
-                                <p class="statbox">Teleop Gears: {3}</p>
-                                <p class="statbox">Dropped Gears: {4}</p>
-                                <p class="statbox">Auto Shoot Points: {5}</p>
-                                <p class="statbox">Teleop Shoot Points: {6}</p>
-                                <p class="statbox">Endgame Points: {7}</p>
+                                <p class="statbox">Auto Switch: {2}</p>
+                                <p class="statbox">Auto Scale: {3}</p>
+                                <p class="statbox">Tele Switch: {4}</p>
+                                <p class="statbox">Tele Scale: {5}</p>
+                                <p class="statbox">Tele Shoot Exchange: {6}</p>
+                                <p class="statbox">Climb: {7}</p>
                             </div>
                         </div>'''.format(n, *entry[1:], color) #unpack the elements
         output += "</div></div>"
@@ -1214,8 +1213,7 @@ class ScoutServer(object):
                 if e[4]:
                     apr += 60
                 if e[4] > 1:
-                    apr += (e[4] - 1) * 30   
-                    
+                    apr += (e[4] - 1) * 30
                 apr += min(min(e[12], 2 - e[4]) * 20, 0)
                 if e[4] + e[12] > 2:
                     apr += min(e[12] + e[4] - 2, 4) * 10
@@ -1552,8 +1550,6 @@ class ScoutServer(object):
             </html>
         '''.format(output)
 
-        
-    
     def predictScore(self, teams, level='quals'):
         conn = sql.connect(self.datapath())
         cursor = conn.cursor()
@@ -1634,8 +1630,8 @@ conf = {
 }
 
 #start method only to be used on the local version
-#def start():
-#    cherrypy.quickstart(ScoutServer(), '/', conf)
+def start():
+   cherrypy.quickstart(ScoutServer(), '/', conf)
 
 #the following is run on the real server
 '''
@@ -1656,4 +1652,3 @@ conf = {
 }
 '''
 cherrypy.quickstart(ScoutServer(), '/', conf)
-

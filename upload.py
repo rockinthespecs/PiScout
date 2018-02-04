@@ -1,7 +1,6 @@
 import os
 import requests
 import server
-
 n = 1
 print("Attemting to upload matches...")
 if os.path.isfile('queue.txt'):
