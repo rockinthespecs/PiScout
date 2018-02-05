@@ -24,7 +24,7 @@ class ScoutServer(object):
                 illegal = e
         if 'event' not in cherrypy.session:
             cherrypy.session['event'] = CURRENT_EVENT
-            
+
         if m != '':
             cherrypy.session['mode'] = m
         if 'mode' not in cherrypy.session:
@@ -134,7 +134,7 @@ class ScoutServer(object):
                 </div>
 
                 <div style="vertical-align:top; border 1px solid black; overflow: hidden">
-                 <table style="font-size: 140%;" class="tablesorter">
+                 <table style="font-size: 120%;" class="tablesorter">
                     <thead><tr>
                         <th>Team</th>
                         <th>APR</th>
@@ -185,40 +185,36 @@ class ScoutServer(object):
         dataset = []
         for e in entries:
             # Important: the index of e refers to the number of the field set in main.py
-            # For example e[1] gets value #1 from main.py
-            dp = {"match": e[2], "autoshoot":0, "shoot":0, "autocubes":0, "teleswitch":0, "cubedrop":0}
+            # For example e[1] gets value #0 from main.py
+            dp = {"match": e[2], "autoswitch":0, "autoscale":0, "teleswitch":0, "telescale":0, "teleexch":0}
             a = ''
-            a += 'baseline, ' if e[6] else ''
-            a += 'switch try, ' if e[19] else ''
-            a += 'scale try, ' if e[20] else ''
-            a += 'side peg, ' if e[21] else ''
-            a += 'center peg, ' if e[22] else ''
-            dp['autocubes'] += e[5]
-            a += str(e[7]) + 'x low goal, ' if e[7] else ''
-            a += str(e[8]) + 'x high goal, ' if e[8] else ''
-            dp['autoshoot'] += e[7]/3 + e[8]
+            a += 'baseline, ' if e[3] else ''
+            dp['autoswitch'] += e[4]
+            a += str(e[4]) + 'x switch, ' if e[4] else ''
+            a += str(e[5]) + 'x scale, ' if e[5] else ''
+            a += str(e[6])
+            dp['autoscale'] += e[5]
 
             d = ''
-            d += str(e[13]) + 'x cubes, ' if e[13] else ''
-            d += str(e[14]) + 'x cubes dropped, ' if e[14] else ''
-            dp['teleswitch'] = e[13]
-            dp['cubedrop'] += e[14]
+            d += str(e[9]) + 'x scale, ' if e[9] else ''
+            d += str(e[7]) + 'x switch, ' if e[7] else ''
+            d += str(e[8]) + 'x exch, ' if e[8] else ''
+            d += str(e[10]) + 'x drop ' if e[10] else ''
+            dp['teleswitch'] = e[7]
+            dp['telescale'] += e[9]
+            dp['teleexch'] += e[8]
 
-            sh = ''
-            sh += str(e[15]) + 'x low goal, ' if e[15] else ''
-            sh += str(e[16]) + 'x high goal, ' if e[16] else ''
-            dp['shoot'] += e[15]/9 + e[16]/3
+            end = ''
+            end +='hang, ' if e[12] else 'failed hang, ' if e[13] else ''
+            end += 'park ' if e[14] and not e[11] else ''
 
-            o = 'hang, ' if e[17] else 'failed hang, ' if e[18] else ''
-            o += str(e[3]) + 'x foul, ' if e[3] else ''
-            o += str(e[4]) + 'x tech foul, ' if e[4] else ''
-            o += 'defense, ' if e[11] else ''
-            o += 'feeder, ' if e[10] else ''
-            o += 'defended, ' if e[12] else ''
+            o = ''
+            o += 'flipped, ' if e[11] else ''
+            o += 'defender, ' if e[15] else ''
 
             #Generate a row in the table for each match
             output += '''
-            <tr {5}>
+            <tr {5}> 
                 <td>{0}</td>
                 <td>{1}</td>
                 <td>{2}</td>
@@ -226,7 +222,7 @@ class ScoutServer(object):
                 <td>{4}</td>
                 <td><a class="flag" href="javascript:flag({6}, {7});">X</a></td>
                 <td><a class="edit" href="/edit?key={8}">E</a></td>
-            </tr>'''.format(e[2], a[:-2], d[:-2], sh[:-2], o[:-2], 'style="color: #B20000"' if e[23] else '', e[2], e[23], e[0])
+            </tr>'''.format(e[2], a, d, end, o, 'style="color: #000000"' if not e[23] else '', e[1], e[18], e[2],e[3])
             for key,val in dp.items():
                 dp[key] = round(val, 2)
             if not e[19]: #if flagged
@@ -328,7 +324,7 @@ class ScoutServer(object):
                         chart.addGraph(graph);
 
                         graph2 = new AmCharts.AmGraph();
-                        graph2.title = "Auto Cubes";
+                        graph2.title = "Auto Scale";
                         graph2.valueAxis = valueAxis2;
                         graph2.type = "smoothedLine"; // this line makes the graph smoothed line.
                         graph2.lineColor = "#187a2e";
@@ -338,7 +334,7 @@ class ScoutServer(object):
                         graph2.bulletBorderAlpha = 1;
                         graph2.bulletBorderThickness = 2;
                         graph2.lineThickness = 2;
-                        graph2.valueField = "autocubes";
+                        graph2.valueField = "autoscale";
                         graph2.balloonText = "Auto Scale:<br><b><span style='font-size:14px;'>[[value]]</span></b>";
                         chart.addGraph(graph2);
 
@@ -439,7 +435,7 @@ class ScoutServer(object):
                     <thead><tr>
                         <th>Match</th>
                         <th>Auto</th>
-                        <th>Cubes</th>
+                        <th>Tele</th>
                         <th>End Game</th>
                         <th>Other</th>
                         <th>Flag</th>
@@ -477,7 +473,7 @@ class ScoutServer(object):
         self.calcavgNoD(num, self.getevent())
         self.calcavgLastThree(num, self.getevent())
         return ''
-    
+
     #Called to recalculate all averages/maxes
     @cherrypy.expose()
     def recalculate(self):
@@ -501,7 +497,7 @@ class ScoutServer(object):
                 Recalc Complete
             </body>
         </html>'''
-        
+
 
     # Input interface to compare teams or alliances
     # This probably won't ever need to be modified
@@ -554,10 +550,10 @@ class ScoutServer(object):
     def teams(self, n1='', n2='', n3='', n4='', stat1='', stat2=''):
         nums = [n1, n2, n3, n4]
         if stat2 == 'none':
-            stat2 = ''      
+            stat2 = ''
         if not stat1:
-            stat1 = 'autogears'
-            
+            stat1 = 'autoswitch'
+
         averages = []
         conn = sql.connect(self.datapath())
         cursor = conn.cursor()
@@ -590,7 +586,7 @@ class ScoutServer(object):
                         <p class="statbox">Endgame Points: {7}</p>
                     </div>
                         </div>'''.format(n, *entry[1:]) #unpack the elements
-        
+
         teamCharts = ''
         dataset = []
         colors = ["#FF0000", "#000FFF", "#1DD300", "#C100E3", "#AF0000", "#000666", "#0D5B000", "#610172"]
@@ -602,32 +598,31 @@ class ScoutServer(object):
             for index, e in enumerate(entries):
             # Important: the index of e refers to the number of the field set in main.py
                 # For example e[1] gets value #1 from main.py
-                dp = {"autoswitch":0, "shoot":0, "autocubes":0, "teleswitch":0, "telescale":0}
+                dp = {"match": e[2], "autoswitch": 0, "autoscale": 0, "teleswitch": 0, "telescale": 0, "teleexch": 0}
                 a = ''
-                a += 'baseline, ' if e[6] else ''
-                a += str(e[5]) + 'x autocubes, ' if e[5] else ''
-                dp['autocubes'] += e[5]
-                a += str(e[7]) + 'x low goal, ' if e[7] else ''
-                a += str(e[8]) + 'x high goal, ' if e[8] else ''
-                dp['autoshoot'] += e[7]/3 + e[8]
-    
+                a += 'baseline, ' if e[3] else ''
+                dp['autoswitch'] += e[4]
+                a += str(e[4]) + 'x switch, ' if e[4] else ''
+                a += str(e[5]) + 'x scale, ' if e[5] else ''
+                a += str(e[6]) + ", "
+                dp['autoscale'] += e[5]
+
                 d = ''
-                d += str(e[13]) + 'x telecubes, ' if e[13] else ''
-                d += str(e[14]) + 'x cubes dropped, ' if e[14] else ''
-                dp['teleswitch'] += e[13]
-                dp['telescale'] += e[14]
-    
-                sh = ''
-                sh += str(e[15]) + 'x low goal, ' if e[15] else ''
-                sh += str(e[16]) + 'x high goal, ' if e[16] else ''
-                dp['shoot'] += e[15]/9 + e[16]/3
-    
-                o = 'hang, ' if e[17] else 'failed hang, ' if e[18] else ''
-                o += str(e[3]) + 'x foul, ' if e[3] else ''
-                o += str(e[4]) + 'x tech foul, ' if e[4] else ''
-                o += 'defense, ' if e[11] else ''
-                o += 'feeder, ' if e[10] else ''
-                o += 'defended, ' if e[12] else ''
+                d += str(e[9]) + 'x scale, ' if e[9] else ''
+                d += str(e[7]) + 'x switch, ' if e[7] else ''
+                d += str(e[8]) + 'x exch, ' if e[8] else ''
+                d += str(e[10]) + 'x drop, ' if e[10] else ''
+                dp['teleswitch'] = e[7]
+                dp['telescale'] += e[9]
+                dp['teleexch'] += e[8]
+
+                end = ''
+                end += 'hang, ' if e[12] else 'failed hang, ' if e[13] else ''
+                end += 'park, ' if e[14] and not e[11] else ''
+
+                o = ''
+                o += 'flipped, ' if e[11] else ''
+                o += 'defender, ' if e[15] else ''
                 for key,val in dp.items():
                     dp[key] = round(val, 2)
                 if not e[19]:
@@ -763,22 +758,22 @@ class ScoutServer(object):
                 <div id="statSelect" style="width:600px; margin:auto;">
                     <form method="post" action="" style="float:left">
                             <select class="fieldsm" name="stat1">
-                              <option id="autoshoot" value="autoshoot">Auto Shoot Points</option>
-                              <option id="autogears" value="autogears">Auto Gears</option>
-                              <option id="shoot" value="shoot">Teleop Shoot Points</option>
-                              <option id="gears" value="gears">Teleop Gears</option>
-                              <option id="geardrop" value="geardrop">Dropped Gears</option>
+                              <option id="autoswitch" value="autoswitch">Auto Switch</option>
+                              <option id="autoscale" value="autoscale">Auto Scale</option>
+                              <option id="teleswitch" value="teleswitch">Teleop Switch</option>
+                              <option id="telescale" value="telescale">Teleop Scale</option>
+                              <option id="teleexch" value="teleexch">Teleop Exchange</option>
                             </select>
                             <button class="submit" type="submit">Submit</button>
                     </form>
                     <form method="post" action="" style="float:right">
                             <select class="fieldsm" name="stat2">
                                 <option id="none" value="none">None</option>
-                                <option id="autoshoot2" value="autoshoot">Auto Shoot Points</option>
-                                <option id="autogears2" value="autogears">Auto Gears</option>
-                                <option id="shoot2" value="shoot">Teleop Shoot Points</option>
-                                <option id="gears2" value="gears">Teleop Gears</option>
-                                <option id="geardrop2" value="geardrop">Dropped Gears</option>
+                              <option id="autoswitch2" value="autoswitch">Auto Switch</option>
+                              <option id="autoscale2" value="autoscale">Auto Scale</option>
+                              <option id="teleswitch2" value="teleswitch">Teleop Switch</option>
+                              <option id="telescale2" value="telescale">Teleop Scale</option>
+                              <option id="teleexch2" value="teleexch">Teleop Exchange</option>
                             </select>
                             <button class="submit" type="submit">Submit</button>
                     </form>
@@ -855,12 +850,12 @@ class ScoutServer(object):
                             </div>
                         </div>'''.format(n, *entry[1:], color) #unpack the elements
         output += "</div></div>"
-        
+
         blue_score = self.predictScore(nums[0:3], level)['score']
         red_score = self.predictScore(nums[3:], level)['score']
         blue_score = int(blue_score)
         red_score = int(red_score)
-        
+
         prob_red = 1/(1+math.e**(-0.08099*(red_score - blue_score))) #calculates win probability from 2016 data
         output = output.format(blue_score, red_score, round((1-prob_red)*100,1), round(prob_red*100,1))
         conn.close()
@@ -917,14 +912,14 @@ class ScoutServer(object):
         self.database_exists(event)
         conn = sql.connect(datapath)
         cursor = conn.cursor()
-        
+
         m = self.getMatches(event, n)
 
         output = ''
 
         if 'feed' in m:
             raise cherrypy.HTTPError(503, "Unable to retrieve data about this event.")
-        
+
         #assign weights, so we can sort the matches
         for match in m:
             match['value'] = match['match_number']
@@ -1024,18 +1019,18 @@ class ScoutServer(object):
             flag = 1
         if d[16] and d[17]:
             flag = 1
-            
+
         m = self.getMatches(event)
-                
+
         if m:
             match = next((item for item in m if (item['match_number'] == d[1]) and (item['comp_level'] == 'qm')))
             teams = match['alliances']['blue']['teams'] + match['alliances']['red']['teams']
             if not 'frc' + str(d[0]) in teams:
-                flag = 1   
-                
+                flag = 1
+
         if d[4]:    #if auto gear, set baseline
             d[5] = 1
-            
+
         if d[18]:   #replay
             cursor.execute('DELETE from scout WHERE d0=? AND d1=?', (str(d[0]),str(d[1])))
         d = d[:18] + d[19:]
@@ -1081,8 +1076,8 @@ class ScoutServer(object):
             if s['autogears']:
                 apr += 20 * min(s['autogears'], 1)
             if s['autogears'] > 1:
-                apr += (s['autogears'] - 1) * 10   
-                
+                apr += (s['autogears'] - 1) * 10
+
             apr += max(min(s['teleopgears'], 2 - s['autogears']) * 20, 0)
             if s['autogears'] + s['teleopgears'] > 2:
                 apr += min(s['teleopgears'] + s['autogears'] - 2, 4) * 10
@@ -1094,7 +1089,7 @@ class ScoutServer(object):
             cursor.execute('INSERT INTO averages VALUES (?,?,?,?,?,?,?,?,?)',(n, apr, s['autogears'], s['teleopgears'], s['geardrop'], s['autoballs'], s['teleopballs'], s['end'], s['defense']))
         conn.commit()
         conn.close()
-        
+
         # Calculates average scores for a team
     def calcavgNoD(self, n, event):
         datapath = 'data_' + event + '.db'
@@ -1127,8 +1122,8 @@ class ScoutServer(object):
             if s['autogears']:
                 apr += 20 * min(s['autogears'], 1)
             if s['autogears'] > 1:
-                apr += (s['autogears'] - 1) * 10   
-                
+                apr += (s['autogears'] - 1) * 10
+
             apr += max(min(s['teleopgears'], 2 - s['autogears']) * 20, 0)
             if s['autogears'] + s['teleopgears'] > 2:
                 apr += min(s['teleopgears'] + s['autogears'] - 2, 4) * 10
@@ -1140,7 +1135,7 @@ class ScoutServer(object):
             cursor.execute('INSERT INTO noDefense VALUES (?,?,?,?,?,?,?,?,?)',(n, apr, s['autogears'], s['teleopgears'], s['geardrop'], s['autoballs'], s['teleopballs'], s['end'], s['defense']))
         conn.commit()
         conn.close()
-        
+
     # Calculates average scores for a team
     def calcavgLastThree(self, n, event):
         datapath = 'data_' + event + '.db'
@@ -1174,8 +1169,8 @@ class ScoutServer(object):
             if s['autogears']:
                 apr += 20 * min(s['autogears'], 1)
             if s['autogears'] > 1:
-                apr += (s['autogears'] - 1) * 10   
-                
+                apr += (s['autogears'] - 1) * 10
+
             apr += max(min(s['teleopgears'], 2 - s['autogears']) * 20, 0)
             if s['autogears'] + s['teleopgears'] > 2:
                 apr += min(s['teleopgears'] + s['autogears'] - 2, 4) * 10
@@ -1187,12 +1182,12 @@ class ScoutServer(object):
             cursor.execute('INSERT INTO lastThree VALUES (?,?,?,?,?,?,?,?,?)',(n, apr, s['autogears'], s['teleopgears'], s['geardrop'], s['autoballs'], s['teleopballs'], s['end'], s['defense']))
         conn.commit()
         conn.close()
-        
+
     def calcmaxes(self, n, event):
         datapath = 'data_' + event + '.db'
         conn = sql.connect(datapath)
         cursor = conn.cursor()
-        
+
         #delete entry, if the team has match records left it will be replaced later
         cursor.execute('DELETE FROM maxes WHERE team=?',(n,))
         entries = cursor.execute('SELECT * FROM scout WHERE d0 = ? AND flag=0 ORDER BY d1 DESC',(n,)).fetchall()
@@ -1238,7 +1233,7 @@ class ScoutServer(object):
         if 'event' not in cherrypy.session:
             cherrypy.session['event'] = CURRENT_EVENT
         return cherrypy.session['event']
-    
+
     def getMatches(self, event, team=''):
         headers = {"X-TBA-App-Id": "frc2067:scouting-system:v02"}
         try:
@@ -1276,7 +1271,7 @@ class ScoutServer(object):
             #stupid lazy solution for local mode
             a = requests.get('http://127.0.0.1:8001/submit?data=json')
         return a
-    
+
     def database_exists(self, event):
         datapath = 'data_' + event + '.db'
         if not os.path.isfile(datapath):
@@ -1289,7 +1284,7 @@ class ScoutServer(object):
             cursor.execute('''CREATE TABLE maxes (team integer, apr integer, autogear real, teleopgear real, geardrop real, autoballs real, teleopballs real, end real)''')
             cursor.execute('''CREATE TABLE comments (team integer, comment text)''')
             conn.close()
-            
+
     @cherrypy.expose()
     def edit(self, key='', team='', match='', fouls='', techFouls='', autoGears='', autoBaseline='',
              autoLowBalls='', autoHighBalls='', gearsFloor='', feeder='', defense='', defended='',
@@ -1312,7 +1307,7 @@ class ScoutServer(object):
                     sqlCommand+= 'd' + str(index) + '=0,'
             if flag:
                 sqlCommand+='flag=1 '
-            else: 
+            else:
                 sqlCommand+='flag=0 '
             sqlCommand+='WHERE key=' + str(key)
             cursor.execute(sqlCommand)
@@ -1325,7 +1320,7 @@ class ScoutServer(object):
         conn = sql.connect(datapath)
         cursor= conn.cursor()
         entries = cursor.execute('SELECT * from scout ORDER BY flag DESC, d0 ASC, d1 ASC').fetchall()
-                
+
         if key == '':
             key = entries[0][0]
         combobox = '''<form method="post" action="edit">
@@ -1333,12 +1328,12 @@ class ScoutServer(object):
 
         for e in entries:
             combobox += '''<option id="{0}" value="{0}">{1} Team {2}: Match {3}</option>\n'''.format(e[0], "*" if e[19] else "", e[1], e[2])
-                         
+
         combobox += '''</select>
                         <button class="submit" type="submit">Submit</button>
                     </form>
                     <br><br>'''
-        
+
         entry = cursor.execute('SELECT * from scout WHERE key=?', (key,)).fetchone()
         conn.close()
         mainEditor = '''<h1>Editing Team {0[1]}: Match {0[2]}</h1>
@@ -1427,8 +1422,8 @@ class ScoutServer(object):
                                           "checked" if entry[10] else "", "checked" if entry[11] else "",
                                           "checked" if entry[12] else "", "checked" if entry[17] else "",
                                           "checked" if entry[18] else "", key, "checked" if entry[19] else "")
-        
-        
+
+
         return '''
             <html>
             <head>
@@ -1447,7 +1442,7 @@ class ScoutServer(object):
                 <h2><syle="colorL #B20000">Match Editor</h2>
                 <br><br>
             '''.format(str(key)) + combobox + mainEditor + '''</body>'''
-            
+
     @cherrypy.expose()
     def rankings(self):
         event = self.getevent()
@@ -1455,9 +1450,9 @@ class ScoutServer(object):
         self.database_exists(event)
         conn = sql.connect(datapath)
         cursor = conn.cursor()
-        
+
         rankings = {}
-        
+
         headers = {"X-TBA-App-Id": "frc2067:scouting-system:v02"}
         m = requests.get("http://www.thebluealliance.com/api/v2/event/{0}/matches".format(event), params=headers)
         r = requests.get("http://www.thebluealliance.com/api/v2/event/{0}/rankings".format(event), params=headers)
@@ -1471,11 +1466,11 @@ class ScoutServer(object):
             m = m.json()
         else:
             raise cherrypy.HTTPError(503, "Unable to retrieve match data for this event.")
- 
+
         del r[0]
         for item in r:
             rankings[str(item[1])] = {'rp': round(item[2]*item[9],0), 'matchScore': item[3], 'currentRP': round(item[2]*item[9],0), 'currentMatchScore': item[3]}
-            
+
         for match in m:
             if match['comp_level'] == 'qm':
                 if match['alliances']['blue']['score'] == -1:
@@ -1593,7 +1588,7 @@ class ScoutServer(object):
                 retVal['fuelRP'] == 1
         retVal['score'] = score
         return retVal
-            
+
     #END OF CLASS
 
 # Execution starts here
@@ -1601,7 +1596,7 @@ datapath = 'data_' + CURRENT_EVENT + '.db'
 
 def keyFromItem(func):
     return lambda item: func(*item)
-    
+
 if not os.path.isfile(datapath):
     # Generate a new database with the three tables
     conn = sql.connect(datapath)
