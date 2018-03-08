@@ -3,10 +3,8 @@ import csv
 # Main method to process a full-page sheet
 # Submits three times, because there are three matches on one sheet
 def main(scout, file):
-    with open(file + ".csv", 'rt', encoding="utf8") as csvfile:
-        reader = csv.reader(csvfile, delimiter=',')
-        for row in reader:
-            scout.set(row)
+    sleep(1)
+    #with open(file + ".txt", 'rt', encoding="utf8") as txtfile:
     # f = open(file + '.csv')
     # csvf = csv.reader(f)
     # for row in csvf:

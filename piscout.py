@@ -11,11 +11,10 @@ import csv
 from server import CURRENT_EVENT
 import sqlite3 as sql
 
-
 # PiScout is a means of collecting match data in a scantron-like format
 # This program was designed to be easily configurable, and new sheets can be made rapidly
 # The configuration for the sheets is done in a separate file (main.py)
-# Cory Lynch 2015
+# Kaitlyn Sandor 2018
 class PiScout:
     # Firstly, initializes the fields of a PiScout object
     # Then it starts the main loop of PiScout
@@ -26,7 +25,7 @@ class PiScout:
         self.sheet = None;
         self.display = None;
         self.data = [[]]
-        self.labels = ["Team", "Match", "Auto Switch", "Auto Scale", "Auto Exchange", "Auto Cross", "Tele Switch", "Tele Scale" , "Tele Exchange" ,"Climb","Ramp","Attempt Climb" ,"Defense", "Tipped", "Notes"]
+        self.labels = ["Team", "Match", "Auto Switch", "Auto Scale", "Auto Exchange", "Auto Dropped","Auto Cross", "Tele Switch", "Tele Scale" , "Tele Exchange" ,"Tele Dropped","Tele Opp Switch","Climb","Ramp","Climbed a Robot","Defense", "Defended", "Notes"]
 
         Thread(target=server.start).start()  # local database server
         f = set(os.listdir("Files"))
@@ -35,10 +34,8 @@ class PiScout:
             files = set(os.listdir("Files"))  # grabs all file names as a set
             added = files - f  # check if any files were added (if first iteration, added = files)
             f = files  # will hold onto this value for the next iteration
-            print("hit1")
             for file in added:
-                if '.csv' in file:
-                    print('hit')
+                if '.txt' in file:
                     main(self, file)
 
     # Adds a data entry into the data dictionary

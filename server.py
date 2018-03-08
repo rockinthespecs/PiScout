@@ -106,7 +106,7 @@ class ScoutServer(object):
                      <p class="main">Change Event</p>
                     <form method="post" action="/">
                         <select class="fieldsm" name="e">
-                          <option id="2018test" value="2018test">Test</option>
+                          <option id="2017dar" value="2017dar">Darwin</option>
                         </select>
                         <button class="submit" type="submit">Submit</button>
                     </form>
@@ -143,7 +143,7 @@ class ScoutServer(object):
                         <th>Tele Switch</th>
                         <th>Tele Scale</th>
                         <th>Tele Exch</th>
-                        <th>Climb</th>
+                        <th>Endgame</th>
                         <th>Defense</th>
                     </tr></thead>
                     <tbody>{0}</tbody>
@@ -188,29 +188,31 @@ class ScoutServer(object):
             # For example e[1] gets value #0 from main.py
             dp = {"match": e[2], "autoswitch":0, "autoscale":0, "teleswitch":0, "telescale":0, "teleexch":0}
             a = ''
-            a += 'baseline, ' if e[3] else ''
-            dp['autoswitch'] += e[4]
-            a += str(e[4]) + 'x switch, ' if e[4] else ''
-            a += str(e[5]) + 'x scale, ' if e[5] else ''
-            a += str(e[6])
-            dp['autoscale'] += e[5]
+            a += 'baseline, ' if e[7] else ''
+            dp['autoswitch'] += e[3]
+            a += str(e[3]) + 'x switch, ' if e[3] else ''
+            a += str(e[4]) + 'x scale, ' if e[4] else ''
+            a += str(e[5]) + 'x exch, ' if e[5] else ''
+            a+=  str(e[6]) + 'x dropped, ' if e[6] else ''
+            dp['autoscale'] += e[4]
 
             d = ''
+            d += str(e[8]) + 'x switch, ' if e[8] else ''
             d += str(e[9]) + 'x scale, ' if e[9] else ''
-            d += str(e[7]) + 'x switch, ' if e[7] else ''
-            d += str(e[8]) + 'x exch, ' if e[8] else ''
-            d += str(e[10]) + 'x drop ' if e[10] else ''
-            dp['teleswitch'] = e[7]
+            d += str(e[10]) + 'x exch, ' if e[10] else ''
+            d += str(e[11]) + 'x drop ' if e[11] else ''
+            dp['teleswitch'] = e[8]
             dp['telescale'] += e[9]
-            dp['teleexch'] += e[8]
+            dp['teleexch'] += e[10]
 
             end = ''
-            end +='hang, ' if e[12] else 'failed hang, ' if e[13] else ''
-            end += 'park ' if e[14] and not e[11] else ''
+            end +='climb, ' if e[12] else ''
+            end += 'park ' if e[13] and not e[12] else ''
+            end += 'climbed bot ' if e[14] and not e[13] and not e[12] else ''
 
             o = ''
-            o += 'flipped, ' if e[11] else ''
-            o += 'defender, ' if e[15] else ''
+            o += 'defense, ' if e[15] else ''
+            o += 'defended, ' if e[16] else ''
 
             #Generate a row in the table for each match
             output += '''
@@ -222,10 +224,10 @@ class ScoutServer(object):
                 <td>{4}</td>
                 <td><a class="flag" href="javascript:flag({6}, {7});">X</a></td>
                 <td><a class="edit" href="/edit?key={8}">E</a></td>
-            </tr>'''.format(e[2], a, d, end, o, 'style="color: #000000"' if not e[23] else '', e[1], e[18], e[2],e[3])
+            </tr>'''.format(e[2], a, d, end, o, 'style="color: #000000"' if not e[17] else '', e[1], e[18], e[2],e[3])
             for key,val in dp.items():
                 dp[key] = round(val, 2)
-            if not e[19]: #if flagged
+            if not e[17]: #if flagged
                 dataset.append(dp) #add it to dataset, which is an array of data that is fed into the graphs
         dataset.reverse() #reverse so that graph is in the correct order
 
@@ -280,7 +282,6 @@ class ScoutServer(object):
                     AmCharts.ready(function () {{
                         // SERIAL CHART
                         chart = new AmCharts.AmSerialChart();
-
                         chart.dataProvider = chartData;
                         chart.marginLeft = 10;
                         chart.categoryField = "match";
@@ -600,29 +601,32 @@ class ScoutServer(object):
                 # For example e[1] gets value #1 from main.py
                 dp = {"match": e[2], "autoswitch": 0, "autoscale": 0, "teleswitch": 0, "telescale": 0, "teleexch": 0}
                 a = ''
-                a += 'baseline, ' if e[3] else ''
-                dp['autoswitch'] += e[4]
-                a += str(e[4]) + 'x switch, ' if e[4] else ''
-                a += str(e[5]) + 'x scale, ' if e[5] else ''
-                a += str(e[6]) + ", "
-                dp['autoscale'] += e[5]
+                a += 'baseline, ' if e[7] else ''
+                dp['autoswitch'] += e[3]
+                a += str(e[3]) + 'x switch, ' if e[3] else ''
+                a += str(e[4]) + 'x scale, ' if e[4] else ''
+                a += str(e[5]) + 'x exch, ' if e[5] else ''
+                a += str(e[6]) + 'x dropped, ' if e[6] else ''
+                dp['autoscale'] += e[4]
 
                 d = ''
+                d += str(e[8]) + 'x switch, ' if e[8] else ''
                 d += str(e[9]) + 'x scale, ' if e[9] else ''
-                d += str(e[7]) + 'x switch, ' if e[7] else ''
-                d += str(e[8]) + 'x exch, ' if e[8] else ''
-                d += str(e[10]) + 'x drop, ' if e[10] else ''
-                dp['teleswitch'] = e[7]
+                d += str(e[10]) + 'x exch, ' if e[10] else ''
+                d += str(e[11]) + 'x drop ' if e[11] else ''
+                dp['teleswitch'] = e[8]
                 dp['telescale'] += e[9]
-                dp['teleexch'] += e[8]
+                dp['teleexch'] += e[10]
 
                 end = ''
-                end += 'hang, ' if e[12] else 'failed hang, ' if e[13] else ''
-                end += 'park, ' if e[14] and not e[11] else ''
+                end += 'climb, ' if e[12] else ''
+                end += 'park ' if e[13] and not e[12] else ''
+                end += 'climbed bot ' if e[14] and not e[13] and not e[12] else ''
 
                 o = ''
-                o += 'flipped, ' if e[11] else ''
-                o += 'defender, ' if e[15] else ''
+                o += 'defense, ' if e[15] else ''
+                o += 'defended, ' if e[16] else ''
+
                 for key,val in dp.items():
                     dp[key] = round(val, 2)
                 if not e[19]:
@@ -1053,40 +1057,44 @@ class ScoutServer(object):
         cursor.execute('DELETE FROM averages WHERE team=?',(n,))
         #d0 is the identifier for team, d1 is the identifier for match
         entries = cursor.execute('SELECT * FROM scout WHERE d0=? AND flag=0 ORDER BY d1 DESC', (n,)).fetchall()
-        s = {'autogears': 0, 'teleopgears': 0, 'geardrop': 0, 'autoballs': 0, 'teleopballs':0, 'end': 0, 'defense': 0}
+        s = {'autoswitch': 0, 'autoscale': 0, 'teleswitch': 0, 'telescale': 0, 'teleexh':0, 'end': 0, 'defense': 0}
         apr = 0
-        # Iterate through all entries (if any exist) and sum all categories
+        # Iterate through all entries (if any exist) and sum all categories (added one to all the entries here
         if entries:
             for e in entries:
                 e = e[1:]
-                s['autogears'] += e[4]
-                s['teleopgears'] += e[12]
-                s['autoballs'] += e[6]/3 + e[7]
-                s['teleopballs'] += e[14]/9 + e[15]/3
-                s['geardrop'] += e[13]
-                s['end'] += e[16]*50
-                s['defense'] += e[10]
+                s['autoswitch'] += e[4]
+                s['autoscale'] += e[5]
+                s['teleswitch'] += e[7]
+                s['telescale'] += e[9]
+                s['teleexch'] += e[8]
+                if e[12]:
+                    s['end'] += e[12]*30
+                else:
+                    s['end'] += e[14]*5
+
+                s['defense'] += e[15]
 
             # take the average (divide by number of entries)
             for key,val in s.items():
                 s[key] = round(val/len(entries), 2)
 
             # formula for calculating APR (point contribution)
-            apr = s['autoballs'] + s['teleopballs'] + s['end']
-            if s['autogears']:
-                apr += 20 * min(s['autogears'], 1)
-            if s['autogears'] > 1:
-                apr += (s['autogears'] - 1) * 10
-
-            apr += max(min(s['teleopgears'], 2 - s['autogears']) * 20, 0)
-            if s['autogears'] + s['teleopgears'] > 2:
-                apr += min(s['teleopgears'] + s['autogears'] - 2, 4) * 10
-            if s['autogears'] + s['teleopgears'] > 6:
-                apr += min(s['teleopgears'] + s['autogears'] - 6, 6) * 7
-            apr = int(apr)
+            #apr = s['autoballs'] + s['teleopballs'] + s['end']
+            #if s['autogears']:
+            #     apr += 20 * min(s['autogears'], 1)
+            # if s['autogears'] > 1:
+            #     apr += (s['autogears'] - 1) * 10
+            #
+            # apr += max(min(s['teleopgears'], 2 - s['autogears']) * 20, 0)
+            # if s['autogears'] + s['teleopgears'] > 2:
+            #     apr += min(s['teleopgears'] + s['autogears'] - 2, 4) * 10
+            # if s['autogears'] + s['teleopgears'] > 6:
+            #     apr += min(s['teleopgears'] + s['autogears'] - 6, 6) * 7
+            # apr = int(apr)
 
             #replace the data entry with a new one
-            cursor.execute('INSERT INTO averages VALUES (?,?,?,?,?,?,?,?,?)',(n, apr, s['autogears'], s['teleopgears'], s['geardrop'], s['autoballs'], s['teleopballs'], s['end'], s['defense']))
+            cursor.execute('INSERT INTO averages VALUES (?,?,?,?,?,?,?,?,?)',(n, apr, s['autoswitch'], s['autoscale'], s['teleswitch'], s['telescale'], s['teleexch'], s['end'], s['defense']))
         conn.commit()
         conn.close()
 
@@ -1164,19 +1172,19 @@ class ScoutServer(object):
             for key,val in s.items():
                 s[key] = round(val/len(entries), 2)
 
-            # formula for calculating APR (point contribution)
-            apr = s['autoballs'] + s['teleopballs'] + s['end']
-            if s['autogears']:
-                apr += 20 * min(s['autogears'], 1)
-            if s['autogears'] > 1:
-                apr += (s['autogears'] - 1) * 10
-
-            apr += max(min(s['teleopgears'], 2 - s['autogears']) * 20, 0)
-            if s['autogears'] + s['teleopgears'] > 2:
-                apr += min(s['teleopgears'] + s['autogears'] - 2, 4) * 10
-            if s['autogears'] + s['teleopgears'] > 6:
-                apr += min(s['teleopgears'] + s['autogears'] - 6, 6) * 7
-            apr = int(apr)
+            # # formula for calculating APR (point contribution)
+            # apr = s['autoballs'] + s['teleopballs'] + s['end']
+            # if s['autogears']:
+            #     apr += 20 * min(s['autogears'], 1)
+            # if s['autogears'] > 1:
+            #     apr += (s['autogears'] - 1) * 10
+            #
+            # apr += max(min(s['teleopgears'], 2 - s['autogears']) * 20, 0)
+            # if s['autogears'] + s['teleopgears'] > 2:
+            #     apr += min(s['teleopgears'] + s['autogears'] - 2, 4) * 10
+            # if s['autogears'] + s['teleopgears'] > 6:
+            #     apr += min(s['teleopgears'] + s['autogears'] - 6, 6) * 7
+            apr = 0
 
             #replace the data entry with a new one
             cursor.execute('INSERT INTO lastThree VALUES (?,?,?,?,?,?,?,?,?)',(n, apr, s['autogears'], s['teleopgears'], s['geardrop'], s['autoballs'], s['teleopballs'], s['end'], s['defense']))
@@ -1286,16 +1294,14 @@ class ScoutServer(object):
             conn.close()
 
     @cherrypy.expose()
-    def edit(self, key='', team='', match='', fouls='', techFouls='', autoGears='', autoBaseline='',
-             autoLowBalls='', autoHighBalls='', gearsFloor='', feeder='', defense='', defended='',
-             teleGears='', teleGearsDropped='', teleLowBalls='', teleHighBalls='', hang='', failHang='', flag=''):
+    def edit(self, key='', team='', match='', autoswitch='', autoscale='', autoexch='', autodropped='',
+             autocross='', teleswitch='', telescale='', teleexch='', teledropped='', climb='',
+             ramp='', climbedon='', defense='', defended='', notes='', flag=''):
         datapath = 'data_' + self.getevent() + '.db'
         conn = sql.connect(datapath)
         cursor = conn.cursor()
         if team:
-            data = (team, match, fouls, techFouls, autoGears, autoBaseline, autoLowBalls, autoHighBalls,
-                    gearsFloor, feeder, defense, defended, teleGears, teleGearsDropped, teleLowBalls,
-                    teleHighBalls, hang, failHang)
+            data = (team, match, autoswitch, autoscale,autoexch,autodropped, autocross, teleswitch, telescale,teleexch, teledropped, climb, ramp, climbedon, defense, defended, notes)
             sqlCommand = 'UPDATE scout SET '
             for index, item in enumerate(data):
                 if item:
@@ -1340,7 +1346,6 @@ class ScoutServer(object):
                         <br>
                         <form method="post" action="edit" style="width:670px">
                                 <div class="editHeaderLeft">Match Info</div>
-                                <div class="editHeaderRight">Fouls</div>
                                 <div class="editCellLeft">
                                     <input type="number" name="key" value="{8}" hidden/>
                                     <label for="team" class="editLabel">Team</label>
@@ -1349,63 +1354,61 @@ class ScoutServer(object):
                                     <label for="match" class="editLabel">Match</label>
                                     <input class="editNum" type="number" name="match" value="{0[2]}">
                                 </div>
-                                <div class="editCellRight">
-                                    <label for="fouls" class="editLabel">Fouls</label>
-                                    <input class="editNum" type="number" name="fouls" value="{0[3]}">
-                                    <br>
-                                    <label for="techFouls" class="editLabel">Tech Fouls</label>
-                                    <input class="editNum" type="number" name="techFouls" value="{0[4]}">
-                                </div>
                                 <div class="editHeaderLeft">Auto</div>
                                 <div class="editHeaderRight">Teleop</div>
                                 <div class="editCellLeft">
-                                    <label for="autoGears" class="editLabel">Auto Gears</label>
-                                    <input class="editNum" type="number" name="autoGears" value="{0[5]}">
+                                    <label for="autocross" class="editLabel">Auto Baseline</label>
+                                    <input class="editNum" type="checkbox" name="autocross" {1}>
                                     <br>
-                                    <label for="autoBaseline" class="editLabel">Auto Baseline</label>
-                                    <input class="editNum" type="checkbox" name="autoBaseline" {1}>
+                                    <label for="autoswitch" class="editLabel">Auto Switch</label>
+                                    <input class="editNum" type="number" name="autoswitch" value="{0[3]}">
                                     <br>
-                                    <label for="autoLowBalls" class="editLabel">Auto Low Balls</label>
-                                    <input class="editNum" type="number" name="autoLowBalls" value="{0[7]}">
+                                    <label for="autoscale" class="editLabel">Auto Scale</label>
+                                    <input class="editNum" type="number" name="autoscale" value="{0[4]}">
+                                    <br>
+                                    <label for="autoexch" class="editLabel">Auto Exchange</label>
+                                    <input class="editNum" type="number" name="autoexch" value="{0[5]}">
+                                     <br>
+                                    <label for="autodropped" class="editLabel">Auto Dropped</label>
+                                    <input class="editNum" type="number" name="autodropped" value="{0[6]}">
                                     </br>
-                                    <label for="autoHighBalls" class="editLabel">Auto High Balls</label>
-                                    <input class="editNum" type="number" name="autoHighBalls" value="{0[8]}">
                                 </div>
                                 <div class="editCellRight">
-                                    <label for="teleGears" class="editLabel">Teleop Gears</label>
-                                    <input class="editNum" type="number" name="teleGears" value="{0[13]}">
+                                    <label for="teleswitch" class="editLabel">Teleop Switch</label>
+                                    <input class="editNum" type="number" name="teleswitch" value="{0[8]}">
                                     <br>
-                                    <label for="teleGearsDropped" class="editLabel">Teleop Dropped Gears</label>
-                                    <input class="editNum" type="number" name="teleGearsDropped" value="{0[14]}">
+                                    <label for="telescale" class="editLabel">Teleop Scale</label>
+                                    <input class="editNum" type="number" name="telescale" value="{0[9]}">
                                     <br>
-                                    <label for="teleLowBalls" class="editLabel">Teleop Low Balls</label>
-                                    <input class="editNum" type="number" name="teleLowBalls" value="{0[15]}">
+                                    <label for="teleexch" class="editLabel">Teleop Exchange</label>
+                                    <input class="editNum" type="number" name="teleexch" value="{0[10]}">
                                     <br>
-                                    <label for="teleHighBalls" class="editLabel">Teleop High Balls</label>
-                                    <input class="editNum" type="number" name="teleHighBalls" value="{0[16]}">
+                                    <label for="teledropped" class="editLabel">Teleop Dropped</label>
+                                    <input class="editNum" type="number" name="teledropped" value="{0[11]}">
+                                    <br>
+                                    </br>
                                 </div>
                                 <div class="editHeaderLeft">Other</div>
                                 <div class="editHeaderRight">End Game</div>
                                 <div class="editCellLeft">
-                                    <label for="gearsFloor" class="editLabel">Gear Floor Intake</label>
-                                    <input class="editNum" type="checkbox" name="gearsFloor" {2}>
+                                    <label for="defense" class="editLabel">Played Defense?</label>
+                                    <input class="editNum" type="checkbox" name="defense" {2}>
                                     <br>
-                                    <label for="feeder" class="editLabel">Feeder Bot</label>
-                                    <input class="editNum" type="checkbox" name="feeder" {3}>
+                                    <label for="defended" class="editLabel">Defended?</label>
+                                    <input class="editNum" type="checkbox" name="defended" {3}>
                                     <br>
-                                    <label for="defense" class="editLabel">Defense Bot</label>
-                                    <input class="editNum" type="checkbox" name="defense" {4}>
-                                    <label for="defended" class="editLabel">Defended</label>
-                                    <input class="editNum" type="checkbox" name="defended" {5}>
                                     <br>
+                                    </br>
                                 </div>
                                 <div class="editCellRight">
-                                    <label for="hang" class="editLabel">Hang</label>
-                                    <input class="editNum" type="checkbox" name="hang" {6}>
+                                    <label for="climb" class="editLabel">Climb</label>
+                                    <input class="editNum" type="checkbox" name="climb" {6}>
                                     <br>
-                                    <label for="failhang" class="editLabel">Failed Hang</label>
-                                    <input class="editNum" type="checkbox" name="failHang" {7}>
+                                    <label for="ramp" class="editLabel">Platform</label>
+                                    <input class="editNum" type="checkbox" name="ramp" {7}>
                                     <br>
+                                    <label for="climbedon" class="editLabel">Climbed a Robot</label>
+                                    <input class="editNum" type="checkbox" name="climbedon" {7}>
                                     <br>
                                     <br>
                                 </div>
