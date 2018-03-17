@@ -20,13 +20,15 @@ class PiScout:
     # Then it starts the main loop of PiScout
     # Requires a function "main" which contains the sheet configuration
     # Loops indefinitely and triggers a response whenever a new sheet is added
+
     def __init__(self, main):
         print('PiScout Starting')
         self.sheet = None;
         self.display = None;
-        self.data = [[]]
-        self.labels = ["Team", "Match", "Auto Switch", "Auto Scale", "Auto Exchange", "Auto Dropped","Auto Cross", "Tele Switch", "Tele Scale" , "Tele Exchange" ,"Tele Dropped","Tele Opp Switch","Climb","Ramp","Climbed a Robot","Defense", "Defended", "Notes"]
-
+        self.data = []
+        self.labels = ["Team", "Match", "Auto Switch", "Auto Scale", "Auto Exchange", "Auto Dropped", "Auto Cross",
+                       "Tele Switch", "Tele Scale", "Tele Exchange", "Tele Dropped", "Tele Opp Switch", "Climb", "Ramp",
+                       "Climbed a Robot", "Defense", "Defended", "Notes"]
         Thread(target=server.start).start()  # local database server
         f = set(os.listdir("Files"))
         while True:
@@ -44,10 +46,9 @@ class PiScout:
     # Opens the GUI, preparing the data for submission
 
     def submit(self):
-        if self.data[0] == 0:
+        if self.data[1] == 0:
             print("Found an empty match, skipping")
             self.data = []
-            self.labels = []
             return
 
         datapath = 'data_' + CURRENT_EVENT + '.db'
@@ -64,13 +65,16 @@ class PiScout:
         # the following block opens the GUI for piscout, this code shouldn't need to change
         print("Found a new file, opening")
         output = ''
+        self.labels = ["Team", "Match", "Auto Switch", "Auto Scale", "Auto Exchange", "Auto Dropped", "Auto Cross",
+                  "Tele Switch", "Tele Scale", "Tele Exchange", "Tele Dropped", "Tele Opp Switch", "Climb", "Ramp",
+                  "Climbed a Robot", "Defense", "Defended", "Notes"]
         assert len(self.labels) == len(self.data)
         for a in range(len(self.data)):
             output += self.labels[a] + "=" + str(self.data[a]) + '\n'
         fig = plt.figure('PiScout')
-        fig.subplots_adjust(left=0, right=0.6)
+        fig.subplots_adjust(left=0, right=.1)
         plt.subplot(111)
-        plt.imshow(self.display)
+        #plt.imshow(self.display)
         plt.title('File')
         plt.text(600, 784, output, fontsize=12)
         upload = Button(plt.axes([0.68, 0.31, 0.15, 0.07]), 'Upload Data')
@@ -89,7 +93,6 @@ class PiScout:
         plt.show()
         self.data = []
         self.labels = []
-        #self.display = cv2.cvtCohlor(self.seet, cv2.COLOR_GRAY2BGR)
 
     # Invoked by the "Save Data Offline" button
     # Adds data to a queue to be uploaded online at a later time
@@ -99,8 +102,7 @@ class PiScout:
         with open("queue.txt", "a+") as file:
             file.write(str(self.data) + '\n')
         plt.close()
-        for row in self.data:
-            requests.post("http://127.0.0.1:8000/submit", data={'event': server.CURRENT_EVENT, 'data': str(self.data)})
+        requests.post("http://127.0.0.1:8000/submit", data={'event': server.CURRENT_EVENT, 'data': str(self.data)})
 
     # Invoked by the "Upload Data" button
     # Uploads all data (including queue) to the online database
@@ -110,12 +112,12 @@ class PiScout:
         print("Attempting upload to server")
 
         try:  # post it to piscout's ip address
-            # requests.post("http://52.2.17.191/submit", data={'data': str(self.data)})
+            requests.post("http://34.228.118.234/submit", data={'data': str(self.data)})
             print("Uploading this match was successful")
             if os.path.isfile('queue.txt'):
                 with open("queue.txt", "r") as file:
                     for line in file:
-                        requests.post("http://52.2.17.191/submit", data={'event': server.CURRENT_EVENT, 'data': line})
+                        requests.post("http://34.228.118.234/submit", data={'event': server.CURRENT_EVENT, 'data': line})
                         print("Uploaded an entry from the queue")
                 os.remove('queue.txt')
             requests.post("http://127.0.0.1:8000/submit", data={'event': server.CURRENT_EVENT, 'data': str(self.data)})
