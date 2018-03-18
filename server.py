@@ -1641,8 +1641,8 @@ from statistics import mode
 
 # Update this value before every event
 # Use the event codes given by thebluealliance
-CURRENT_EVENT = '2018water'
-DEFAULT_MODE = 'maxes'
+CURRENT_EVENT = '2018SE'
+DEFAULT_MODE = 'averages'
 
 
 class ScoutServer(object):
@@ -1682,7 +1682,7 @@ class ScoutServer(object):
                 <td>{4}</td>
                 <td>{5}</td>
             </tr>
-            '''.format(team[0], team[1], team[2], team[3], team[5], team[6])
+            '''.format(team[0], team[2], team[3], team[4], team[5], team[6])
         # in this next block, update the event list and the column titles
         return '''
         <html>
@@ -1732,6 +1732,7 @@ class ScoutServer(object):
                     <form method="post" action="">
                         <select class="fieldsm" name="e">
                           <option id="2018water" value="2018water">Waterbury District</option>
+                          <option id="2018SE" value = "2018SE">SE CT District</option>
                         </select>
                         <button class="submit" type="submit">Submit</button>
                     </form>
@@ -1807,33 +1808,34 @@ class ScoutServer(object):
             # For example e[1] gets value #1 from main.py
             # Important: the index of e refers to the number of the field set in main.py
             # For example e[1] gets value #0 from main.py
-            dp = {"match": e[2], "autoswitch":0, "autoscale":0, "teleswitch":0, "telescale":0, "teleexch":0,}
+            dp = {"match": e[1], "autoswitch":0, "autoscale":0, "teleswitch":0, "telescale":0, "teleexch":0,"teledrop":0}
             a = ''
-            a += 'baseline, ' if e[7] else ''
-            dp['autoswitch'] += e[3]
-            a += str(e[3]) + 'x switch, ' if e[3] else ''
-            a += str(e[4]) + 'x scale, ' if e[4] else ''
-            a += str(e[5]) + 'x exch, ' if e[5] else ''
-            a+=  str(e[6]) + 'x dropped, ' if e[6] else ''
-            dp['autoscale'] += e[4]
+            a += 'baseline, ' if e[6] else ''
+            dp['autoswitch'] += e[2]
+            a += str(e[2]) + 'x switch, ' if e[2] else ''
+            a += str(e[3]) + 'x scale, ' if e[3] else ''
+            a += str(e[4]) + 'x exch, ' if e[4] else ''
+            a+=  str(e[5]) + 'x dropped, ' if e[5] else ''
+            dp['autoscale'] += e[3]
 
             d = ''
-            d += str(e[8]) + 'x switch, ' if e[8] else ''
-            d += str(e[9]) + 'x scale, ' if e[9] else ''
-            d += str(e[10]) + 'x exch, ' if e[10] else ''
-            d += str(e[11]) + 'x drop ' if e[11] else ''
-            dp['teleswitch'] = e[8]
-            dp['telescale'] += e[9]
-            dp['teleexch'] += e[10]
+            d += str(e[7]) + 'x switch, ' if e[7] else ''
+            d += str(e[8]) + 'x scale, ' if e[8] else ''
+            d += str(e[9]) + 'x exch, ' if e[9] else ''
+            d += str(e[10]) + 'x drop ' if e[10] else ''
+            dp['teleswitch'] = e[7]
+            dp['telescale'] += e[8]
+            dp['teleexch'] += e[9]
+            dp["teledrop"]+= e[10]
 
             end = ''
-            end +='climb, ' if e[13] else ''
-            end += 'park ' if e[14]  else ''
-            end += 'climbed bot ' if e[15] else ''
+            end +='climb, ' if e[12] else ''
+            end += 'park ' if e[13]  else ''
+            end += 'climbed bot ' if e[14] else ''
 
             o = ''
-            o += 'defense, ' if e[16] else ''
-            o+= 'defended,' if e[17] else ''
+            o += 'defense, ' if e[15] else ''
+            o+= 'defended,' if e[16] else ''
             c = ''
             c += e[17]
 
@@ -2435,18 +2437,18 @@ class ScoutServer(object):
         # Iterate through all entries (if any exist) and sum all categories (added one to all the entries here
         if entries:
             for e in entries:
-                e = e[1:]
-                s['autoswitch'] += e[4]
-                s['autoscale'] += e[5]
-                s['teleswitch'] += e[8]
-                s['telescale'] += e[9]
-                s['teleexch'] += e[10]
-                if e[13] or e[15]:
-                    s['end'] += e[12]*30
-                else:
-                    s['end'] += e[14]*5
-                s['defense'] += e[0]
+                s['autoswitch'] += e[2]
+                s['autoscale'] += e[3]
+                s['teleswitch'] += e[7]
+                s['telescale'] += e[8]
+                s['teleexch'] += e[9]
+                if e[12] or e[14]:
+                    s['end'] += 30
+                elif e[13]:
+                    s['end'] += 5
+                s['defense'] += e[15]
 
+            print(s['end'])
             # take the average (divide by number of entries)
             for key,val in s.items():
                 s[key] = round(val/len(entries), 2)
@@ -2532,9 +2534,9 @@ class ScoutServer(object):
             cursor.execute('CREATE TABLE scout (' + ','.join(
                 [('d' + str(a) + ' integer') for a in range(18)]) + ',flag integer' + ')')
             cursor.execute(
-                '''CREATE TABLE averages (team integer,apr integer,autogear real,teleopgear real, geardrop real, autoballs real, teleopballs real, end real)''')
+                '''CREATE TABLE averages (team integer,apr integer,autosw real,autosc real, telesw real, telesc real, teleexch real, end real)''')
             cursor.execute(
-                '''CREATE TABLE maxes (team integer, apr integer, autogear real, teleopgear real, geardrop real, autoballs real, teleopballs real, end real)''')
+                '''CREATE TABLE maxes (team integer,apr integer,autosw real,autosc real, telesw real, telesc real, teleexch real, end real)''')
             cursor.execute('''CREATE TABLE comments (team integer, comment text)''')
             conn.close()
             # END OF CLASS
@@ -2551,9 +2553,9 @@ if not os.path.isfile(datapath):
     cursor.execute(
         'CREATE TABLE scout (' + ','.join([('d' + str(a) + ' integer') for a in range(18)]) + ',flag integer' + ')')
     cursor.execute(
-        '''CREATE TABLE averages (team integer,apr integer,autogear real,teleopgear real, geardrop real, autoballs real, teleopballs real, end real)''')
+        '''CREATE TABLE averages (team integer,apr integer,autosw real,autosc real, telesw real, telesc real, teleexch real, end real)''')
     cursor.execute(
-        '''CREATE TABLE maxes (team integer, apr integer, autogear real, teleopgear real, geardrop real, autoballs real, teleopballs real, end real)''')
+        '''CREATE TABLE maxes (team integer,apr integer,autosw real,autosc real, telesw real, telesc real, teleexch real, end real)''')
     cursor.execute('''CREATE TABLE comments (team integer, comment text)''')
     cursor.execute(
         '''CREATE TABLE matches (match_number integer, comp_level text, red1 integer, red2 integer, red3 integer, blue1 integer, blue2 integer, blue3 integer, red_score integer, blue_score integer)''')

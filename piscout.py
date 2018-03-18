@@ -46,6 +46,7 @@ class PiScout:
     # Opens the GUI, preparing the data for submission
 
     def submit(self):
+        print(self.data)
         if self.data[1] == 0:
             print("Found an empty match, skipping")
             self.data = []
@@ -68,29 +69,32 @@ class PiScout:
         self.labels = ["Team", "Match", "Auto Switch", "Auto Scale", "Auto Exchange", "Auto Dropped", "Auto Cross",
                   "Tele Switch", "Tele Scale", "Tele Exchange", "Tele Dropped", "Tele Opp Switch", "Climb", "Ramp",
                   "Climbed a Robot", "Defense", "Defended", "Notes"]
+        print(len(self.labels))
+        print(len(self.data))
         assert len(self.labels) == len(self.data)
         for a in range(len(self.data)):
             output += self.labels[a] + "=" + str(self.data[a]) + '\n'
-        fig = plt.figure('PiScout')
-        fig.subplots_adjust(left=0, right=.1)
-        plt.subplot(111)
-        #plt.imshow(self.display)
-        plt.title('File')
-        plt.text(600, 784, output, fontsize=12)
-        upload = Button(plt.axes([0.68, 0.31, 0.15, 0.07]), 'Upload Data')
-        upload.on_clicked(self.upload)
-        save = Button(plt.axes([0.68, 0.24, 0.15, 0.07]), 'Save Data Offline')
-        save.on_clicked(self.save)
-        edit = Button(plt.axes([0.68, 0.17, 0.15, 0.07]), 'Edit Data')
-        edit.on_clicked(self.edit)
-        cancel = Button(plt.axes([0.68, 0.1, 0.15, 0.07]), 'Cancel')
-        cancel.on_clicked(self.cancel)
-        mng = plt.get_current_fig_manager()
-        try:
-            mng.window.state('zoomed')
-        except AttributeError:
-            print("Window resizing exploded, oh well.")
-        plt.show()
+        self.save(CURRENT_EVENT)
+        # fig = plt.figure('PiScout')
+        # fig.subplots_adjust(left=0, right=.1)
+        # plt.subplot(111)
+        # #plt.imshow(self.display)
+        # plt.title('File')
+        # plt.text(600, 784, output, fontsize=12)
+        # upload = Button(plt.axes([0.68, 0.31, 0.15, 0.07]), 'Upload Data')
+        # upload.on_clicked(self.upload)
+        # save = Button(plt.axes([0.68, 0.24, 0.15, 0.07]), 'Save Data Offline')
+        # save.on_clicked(self.save)
+        # edit = Button(plt.axes([0.68, 0.17, 0.15, 0.07]), 'Edit Data')
+        # edit.on_clicked(self.edit)
+        # cancel = Button(plt.axes([0.68, 0.1, 0.15, 0.07]), 'Cancel')
+        # cancel.on_clicked(self.cancel)
+        # mng = plt.get_current_fig_manager()
+        # try:
+        #     mng.window.state('zoomed')
+        # except AttributeError:
+        #     print("Window resizing exploded, oh well.")
+        # plt.show()
         self.data = []
         self.labels = []
 
