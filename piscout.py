@@ -116,12 +116,12 @@ class PiScout:
         print("Attempting upload to server")
 
         try:  # post it to piscout's ip address
-            requests.post("http://34.228.118.234/submit", data={'data': str(self.data)})
+            requests.post("http://34.225.109.159/submit", data={'data': str(self.data)})
             print("Uploading this match was successful")
             if os.path.isfile('queue.txt'):
                 with open("queue.txt", "r") as file:
                     for line in file:
-                        requests.post("http://34.228.118.234/submit", data={'event': server.CURRENT_EVENT, 'data': line})
+                        requests.post("http://34.225.109.159/submit", data={'event': server.CURRENT_EVENT, 'data': line})
                         print("Uploaded an entry from the queue")
                 os.remove('queue.txt')
             requests.post("http://127.0.0.1:8000/submit", data={'event': server.CURRENT_EVENT, 'data': str(self.data)})

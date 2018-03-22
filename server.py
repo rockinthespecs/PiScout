@@ -1722,7 +1722,6 @@ class ScoutServer(object):
                     <p class="main">Main Display</p>
                     <form method="post" action="">
                         <select class="fieldsm" name="m">
-                            <option id="maxes" value="maxes">Maxes</option>
                             <option id="averages" value="averages">Averages</option>
                         </select>
                         <button class="submit" type="submit">Submit</button>
@@ -1733,15 +1732,6 @@ class ScoutServer(object):
                         <select class="fieldsm" name="e">
                           <option id="2018water" value="2018water">Waterbury District</option>
                           <option id="2018SE" value = "2018SE">SE CT District</option>
-                        </select>
-                        <button class="submit" type="submit">Submit</button>
-                    </form>
-                    <br><br>
-                    <p class="main">Compare</p>
-                    <form method="get" action="compare">
-                        <select class="fieldsm" name="t">
-                          <option value="team">Teams</option>
-                          <option value="alliance">Alliances</option>
                         </select>
                         <button class="submit" type="submit">Submit</button>
                     </form>
@@ -1841,17 +1831,17 @@ class ScoutServer(object):
 
             # Generate a row in the table for each match
             output += '''
-                <tr {6}>
-                    <td>{0}</td>
-                    <td>{1}</td>
-                    <td>{2}</td>
-                    <td>{3}</td>
-                    <td>{4}</td>
-                    <td>{5}</td>
-                    <td><a class="flag" href="javascript:flag({6}, {7});">X</a></td>
-                </tr>'''.format(e[1], a, d,end, o,c, 'style="color: #B20000"' if e[18] else '', e[1], e[18])
-        for key, val in dp.items():
-            dp[key] = round(val, 2)
+            <tr {6}>
+                <td>{0}</td>
+                <td>{1}</td>
+                <td>{2}</td>
+                <td>{3}</td>
+                <td>{4}</td>
+                <td>{5}</td>
+                <td><a class="flag" href="javascript:flag({6}, {7});">X</a></td>
+            </tr>'''.format(e[1], a, d,end, o,c, 'style="color: #B20000"' if e[18] else '', e[1], e[18])
+            for key, val in dp.items():
+                dp[key] = round(val, 2)
             if not e[18]:  # if flagged
                 dataset.append(dp)  # add it to dataset, which is an array of data that is fed into the graphs
         dataset.reverse()  # reverse so that graph is in the correct order
@@ -1883,210 +1873,227 @@ class ScoutServer(object):
                     </div>'''.format(media['details']['image_partial'].replace('_l', '_m'))
                 break
 
-        # Every year, update the labels for the graphs. The data will come from the variable dataset
-        # Then update all the column headers and stuff
+                # Every year, update the labels for the graphs. The data will come from the variable dataset
+                # Then update all the column headers and stuff
         return '''
-            <html>
-                <head>
-                    <title>{0} | PiScout</title>
-                    <link href="http://fonts.googleapis.com/css?family=Chau+Philomene+One" rel="stylesheet" type="text/css">
-                    <link href="/static/css/style.css" rel="stylesheet">
-                    <script type="text/javascript" src="/static/js/amcharts.js"></script>
-                    <script type="text/javascript" src="/static/js/serial.js"></script>
-                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-                    <script>
-                    if (typeof jQuery === 'undefined')
-                      document.write(unescape('%3Cscript%20src%3D%22/static/js/jquery.js%22%3E%3C/script%3E'));
-                    </script>
-                    <script>
-                        var chart;
-                        var graph;
-    
-                        var chartData = {9};
-    
-                        AmCharts.ready(function () {{
-                            // SERIAL CHART
-                            chart = new AmCharts.AmSerialChart();
-    
-                            chart.dataProvider = chartData;
-                            chart.marginLeft = 10;
-                            chart.categoryField = "match";
-    
-                            // AXES
-                            // category
-                            var categoryAxis = chart.categoryAxis;
-                            categoryAxis.dashLength = 3;
-                            categoryAxis.minorGridEnabled = true;
-                            categoryAxis.minorGridAlpha = 0.1;
-    
-                            // value
-                            var valueAxis = new AmCharts.ValueAxis();
-                            valueAxis.position = "left";
-                            valueAxis.axisColor = "#111111";
-                            valueAxis.gridAlpha = 0;
-                            valueAxis.axisThickness = 2;
-                            chart.addValueAxis(valueAxis)
-    
-                            var valueAxis2 = new AmCharts.ValueAxis();
-                            valueAxis2.position = "right";
-                            valueAxis2.axisColor = "#FCD202";
-                            valueAxis2.gridAlpha = 0;
-                            valueAxis2.axisThickness = 2;
-                            chart.addValueAxis(valueAxis2);
-    
-                            // GRAPH
-                            graph = new AmCharts.AmGraph();
-                            graph.title = "Auto Switch";
-                            graph.valueAxis = valueAxis;
-                            graph.type = "smoothedLine"; // this line makes the graph smoothed line.
-                            graph.lineColor = "#637bb6";
-                            graph.bullet = "round";
-                            graph.bulletSize = 8;
-                            graph.bulletBorderColor = "#FFFFFF";
-                            graph.bulletBorderAlpha = 1;
-                            graph.bulletBorderThickness = 2;
-                            graph.lineThickness = 2;
-                            graph.valueField = "autoswitch";
-                            graph.balloonText = "Auto Switch:<br><b><span style='font-size:14px;'>[[value]]</span></b>";
-                            chart.addGraph(graph);
-    
-                            graph2 = new AmCharts.AmGraph();
-                            graph2.title = "Auto Scale";
-                            graph2.valueAxis = valueAxis2;
-                            graph2.type = "smoothedLine"; // this line makes the graph smoothed line.
-                            graph2.lineColor = "#187a2e";
-                            graph2.bullet = "round";
-                            graph2.bulletSize = 8;
-                            graph2.bulletBorderColor = "#FFFFFF";
-                            graph2.bulletBorderAlpha = 1;
-                            graph2.bulletBorderThickness = 2;
-                            graph2.lineThickness = 2;
-                            graph2.valueField = "autoscale";
-                            graph2.balloonText = "Auto Scale:<br><b><span style='font-size:14px;'>[[value]]</span></b>";
-                            chart.addGraph(graph2);
-    
-                            graph3 = new AmCharts.AmGraph();
-                            graph3.title = "Tele Switch";
-                            graph3.valueAxis = valueAxis;
-                            graph3.type = "smoothedLine"; // this line makes the graph smoothed line.
-                            graph3.lineColor = "#FF6600";
-                            graph3.bullet = "round";
-                            graph3.bulletSize = 8;
-                            graph3.bulletBorderColor = "#FFFFFF";
-                            graph3.bulletBorderAlpha = 1;
-                            graph3.bulletBorderThickness = 2;
-                            graph3.lineThickness = 2;
-                            graph3.valueField = "teleswitch";
-                            graph3.balloonText = "Tele Switch:<br><b><span style='font-size:14px;'>[[value]]</span></b>";
-                            chart.addGraph(graph3);
-    
-                            graph4 = new AmCharts.AmGraph();
-                            graph4.valueAxis = valueAxis2;
-                            graph4.title = "Tele Exchange";
-                            graph4.type = "smoothedLine"; // this line makes the graph smoothed line.
-                            graph4.lineColor = "#FCD202";
-                            graph4.bullet = "round";
-                            graph4.bulletSize = 8;
-                            graph4.bulletBorderColor = "#FFFFFF";
-                            graph4.bulletBorderAlpha = 1;
-                            graph4.bulletBorderThickness = 2;
-                            graph4.lineThickness = 2;
-                            graph4.valueField = "teleexch";
-                            graph4.balloonText = "Tele Exchange:<br><b><span style='font-size:14px;'>[[value]]</span></b>";
-                            chart.addGraph(graph4);
-    
-                            graph5 = new AmCharts.AmGraph();
-                            graph5.valueAxis = valueAxis2;
-                            graph5.title = "Dropped Gears";
-                            graph5.type = "smoothedLine"; // this line makes the graph smoothed line.
-                            graph5.lineColor = "#FF0000";
-                            graph5.bullet = "round";
-                            graph5.bulletSize = 8;
-                            graph5.bulletBorderColor = "#FFFFFF";
-                            graph5.bulletBorderAlpha = 1;
-                            graph5.bulletBorderThickness = 2;
-                            graph5.lineThickness = 2;
-                            graph5.valueField = "geardrop";
-                            graph5.balloonText = "Dropped Gears:<br><b><span style='font-size:14px;'>[[value]]</span></b>";
-                            chart.addGraph(graph5);
-    
-                            // CURSOR
-                            var chartCursor = new AmCharts.ChartCursor();
-                            chartCursor.cursorAlpha = 0;
-                            chartCursor.cursorPosition = "mouse";
-                            chart.addChartCursor(chartCursor);
-    
-                            var legend = new AmCharts.AmLegend();
-                            legend.marginLeft = 110;
-                            legend.useGraphSettings = true;
-                            chart.addLegend(legend);
-                            chart.creditsPosition = "bottom-right";
-    
-                            // WRITE
-                            chart.write("chartdiv");
-                        }});
-    
-                        function flag(m, f)
-                        {{
-                            $.post(
-                                "flag",
-                                {{num: {0}, match: m, flagval: f}}
-                            );
-                            window.location.reload(true);
-                        }}
-                    </script>
-                </head>
-                <body>
-                    <h1 class="big">Team {0}</h1>
-                    <h2><a style="color: #B20000" href='/'>PiScout Database</a></h2>
-                    <br><br>
-                    <div style="text-align:center;">
-                        <div id="apr">
-                            <p style="font-size: 200%; margin: 0.65em; line-height: 0.1em">APR</p>
-                            <p style="font-size: 400%; line-height: 0em">{2}</p>
-                        </div>
-                        <div id="stats">
-                            <p class="statbox" style="font-weight:bold">Average match:</p>
-                            <p class="statbox">Auto Switch: {3}</p>
-                            <p class="statbox">Auto Scale: {4}</p>
-                            <p class="statbox">Tele Switch: {5}</p>
-                            <p class="statbox">Tele Scale: {6}</p>
-                            <p class="statbox">Tele Exchange: {7}</p>
-                            <p class="statbox">Endgame Points: {8}</p>
-                        </div>
+        <html>
+            <head>
+                <title>{0} | PiScout</title>
+                <link href="http://fonts.googleapis.com/css?family=Chau+Philomene+One" rel="stylesheet" type="text/css">
+                <link href="/static/css/style.css" rel="stylesheet">
+                <script type="text/javascript" src="/static/js/amcharts.js"></script>
+                <script type="text/javascript" src="/static/js/serial.js"></script>
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+                <script>
+                if (typeof jQuery === 'undefined')
+                  document.write(unescape('%3Cscript%20src%3D%22/static/js/jquery.js%22%3E%3C/script%3E'));
+                </script>
+                <script>
+                    var chart;
+                    var graph;
+
+                    var chartData = {9};
+
+                    AmCharts.ready(function () {{
+                        // SERIAL CHART
+                        chart = new AmCharts.AmSerialChart();
+
+                        chart.dataProvider = chartData;
+                        chart.marginLeft = 10;
+                        chart.categoryField = "match";
+
+                        // AXES
+                        // category
+                        var categoryAxis = chart.categoryAxis;
+                        categoryAxis.dashLength = 3;
+                        categoryAxis.minorGridEnabled = true;
+                        categoryAxis.minorGridAlpha = 0.1;
+
+                        // value
+                        var valueAxis = new AmCharts.ValueAxis();
+                        valueAxis.position = "left";
+                        valueAxis.axisColor = "#111111";
+                        valueAxis.gridAlpha = 0;
+                        valueAxis.axisThickness = 2;
+                        chart.addValueAxis(valueAxis)
+
+                        var valueAxis2 = new AmCharts.ValueAxis();
+                        valueAxis2.position = "right";
+                        valueAxis2.axisColor = "#FCD202";
+                        valueAxis2.gridAlpha = 0;
+                        valueAxis2.axisThickness = 2;
+                        chart.addValueAxis(valueAxis2);
+
+                        // GRAPH
+                        graph = new AmCharts.AmGraph();
+                        graph.title = "Auto Switch";
+                        graph.valueAxis = valueAxis;
+                        graph.type = "smoothedLine"; // this line makes the graph smoothed line.
+                        graph.lineColor = "#637bb6";
+                        graph.bullet = "round";
+                        graph.bulletSize = 8;
+                        graph.bulletBorderColor = "#FFFFFF";
+                        graph.bulletBorderAlpha = 1;
+                        graph.bulletBorderThickness = 2;
+                        graph.lineThickness = 2;
+                        graph.valueField = "autoswitch";
+                        graph.balloonText = "Auto Switch:<br><b><span style='font-size:14px;'>[[value]]</span></b>";
+                        chart.addGraph(graph);
+
+                        graph2 = new AmCharts.AmGraph();
+                        graph2.title = "Auto Scale";
+                        graph2.valueAxis = valueAxis2;
+                        graph2.type = "smoothedLine"; // this line makes the graph smoothed line.
+                        graph2.lineColor = "#187a2e";
+                        graph2.bullet = "round";
+                        graph2.bulletSize = 8;
+                        graph2.bulletBorderColor = "#FFFFFF";
+                        graph2.bulletBorderAlpha = 1;
+                        graph2.bulletBorderThickness = 2;
+                        graph2.lineThickness = 2;
+                        graph2.valueField = "autoscale";
+                        graph2.balloonText = "Auto Scale:<br><b><span style='font-size:14px;'>[[value]]</span></b>";
+                        chart.addGraph(graph2);
+
+                        graph3 = new AmCharts.AmGraph();
+                        graph3.title = "Tele Switch";
+                        graph3.valueAxis = valueAxis;
+                        graph3.type = "smoothedLine"; // this line makes the graph smoothed line.
+                        graph3.lineColor = "#FF6600";
+                        graph3.bullet = "round";
+                        graph3.bulletSize = 8;
+                        graph3.bulletBorderColor = "#FFFFFF";
+                        graph3.bulletBorderAlpha = 1;
+                        graph3.bulletBorderThickness = 2;
+                        graph3.lineThickness = 2;
+                        graph3.valueField = "teleswitch";
+                        graph3.balloonText = "Tele Switch:<br><b><span style='font-size:14px;'>[[value]]</span></b>";
+                        chart.addGraph(graph3);
+
+                        graph4 = new AmCharts.AmGraph();
+                        graph4.valueAxis = valueAxis2;
+                        graph4.title = "Tele Exchange";
+                        graph4.type = "smoothedLine"; // this line makes the graph smoothed line.
+                        graph4.lineColor = "#FCD202";
+                        graph4.bullet = "round";
+                        graph4.bulletSize = 8;
+                        graph4.bulletBorderColor = "#FFFFFF";
+                        graph4.bulletBorderAlpha = 1;
+                        graph4.bulletBorderThickness = 2;
+                        graph4.lineThickness = 2;
+                        graph4.valueField = "teleexch";
+                        graph4.balloonText = "Tele Exchange:<br><b><span style='font-size:14px;'>[[value]]</span></b>";
+                        chart.addGraph(graph4);
+
+                        graph5 = new AmCharts.AmGraph();
+                        graph5.valueAxis = valueAxis2;
+                        graph5.title = "Dropped Gears";
+                        graph5.type = "smoothedLine"; // this line makes the graph smoothed line.
+                        graph5.lineColor = "#FF0000";
+                        graph5.bullet = "round";
+                        graph5.bulletSize = 8;
+                        graph5.bulletBorderColor = "#FFFFFF";
+                        graph5.bulletBorderAlpha = 1;
+                        graph5.bulletBorderThickness = 2;
+                        graph5.lineThickness = 2;
+                        graph5.valueField = "geardrop";
+                        graph5.balloonText = "Dropped Gears:<br><b><span style='font-size:14px;'>[[value]]</span></b>";
+                        chart.addGraph(graph5);
+                        
+                        graph6 = new AmCharts.AmGraph();
+                        graph6.valueAxis = valueAxis2;
+                        graph6.title = "Tele Scale";
+                        graph6.type = "smoothedLine"; // this line makes the graph smoothed line.
+                        graph6.lineColor = "#FF2200";
+                        graph6.bullet = "round";
+                        graph6.bulletSize = 8;
+                        graph6.bulletBorderColor = "#FFFFFF";
+                        graph6.bulletBorderAlpha = 1;
+                        graph6.bulletBorderThickness = 2;
+                        graph6.lineThickness = 2;
+                        graph6.valueField = "telescale";
+                        graph6.balloonText = "Tele Scale:<br><b><span style='font-size:14px;'>[[value]]</span></b>";
+                        chart.addGraph(graph6);
+
+                        // CURSOR
+                        var chartCursor = new AmCharts.ChartCursor();
+                        chartCursor.cursorAlpha = 0;
+                        chartCursor.cursorPosition = "mouse";
+                        chart.addChartCursor(chartCursor);
+
+                        var legend = new AmCharts.AmLegend();
+                        legend.marginLeft = 110;
+                        legend.useGraphSettings = true;
+                        chart.addLegend(legend);
+                        chart.creditsPosition = "bottom-right";
+
+                        // WRITE
+                        chart.write("chartdiv");
+                    }});
+
+                    function flag(m, f)
+                    {{
+                        $.post(
+                            "flag",
+                            {{num: {0}, match: m, flagval: f}}
+                        );
+                        window.location.reload(true);
+                    }}
+                </script>
+            </head>
+            <body>
+                <h1 class="big">Team {0}</h1>
+                <h2><a style="color: #B20000" href='/'>PiScout Database</a></h2>
+                <br><br>
+                <div style="text-align:center;">
+                    <div id="apr">
+                        <p style="font-size: 200%; margin: 0.65em; line-height: 0.1em">APR</p>
+                        <p style="font-size: 400%; line-height: 0em">{2}</p>
                     </div>
-                    <br>
-                    <div id="chartdiv" style="width:1000px; height:400px; margin: 0 auto;"></div>
-                    <br>
-                    <table>
-                        <thead><tr>
-                            <th>Match</th>
-                            <th>Auto</th>
-                            <th>Teleop</th>
-                            <th>Endgame</th>
-                            <th>Other</th>
-                            <th>Comments</th>
-                            <th>Flag</th>
-                        </tr></thead>{1}
-                    </table>
-                    {10}
-                    <br>
-                    <div style="text-align: center; max-width: 700px; margin: 0 auto;">
-                        <p style="font-size: 32px; line-height: 0em;">Comments</p>
-                        {11}
-                        <form style="width: 100%; max-width: 700px;" method="post" action="submit">
-                            <input name="team" value="{0}" hidden/>
-                            <textarea name="comment" rows="3"></textarea>
-                            <button class="submit" type="submit">Submit</button>
-                        </form>
+                    <div id="stats">
+                        <p class="statbox" style="font-weight:bold">Average match:</p>
+                        <p class="statbox">Auto Switch: {3}</p>
+                        <p class="statbox">Auto Scale: {4}</p>
+                        <p class="statbox">Tele Switch: {5}</p>
+                        <p class="statbox">Tele Scale: {6}</p>
+                        <p class="statbox">Tele Exchange: {7}</p>
+                        <p class="statbox">Endgame Points: {8}</p>
                     </div>
-                    <br>
-                    <p style="text-align: center; font-size: 24px"><a href="/matches?n={0}">View this team's match schedule</a></p>
-                </body>
-            </html>'''.format(n, output, s[1], s[2], s[3], s[4], s[5], s[6], s[7], str(dataset).replace("'", '"'), imcode,
-                              commentstr)
+                </div>
+                <br>
+                <div id="chartdiv" style="width:1000px; height:400px; margin: 0 auto;"></div>
+                <br>
+                <table>
+                    <thead><tr>
+                        <th>Match</th>
+                        <th>Auto</th>
+                        <th>Teleop</th>
+                        <th>Endgame</th>
+                        <th>Other</th>
+                        <th>Comments</th>
+                        <th>Flag</th>
+                    </tr></thead>{1}
+                </table>
+                {10}
+                <br>
+                <div style="text-align: center; max-width: 700px; margin: 0 auto;">
+                    <p style="font-size: 32px; line-height: 0em;">Comments</p>
+                    {11}
+                    <form style="width: 100%; max-width: 700px;" method="post" action="submit">
+                        <input name="team" value="{0}" hidden/>
+                        <textarea name="comment" rows="3"></textarea>
+                        <button class="submit" type="submit">Submit</button>
+                    </form>
+                </div>
+                <br>
+                <p style="text-align: center; font-size: 24px"><a href="/matches?n={0}">View this team's match schedule</a></p>
+            </body>
+        </html>'''.format(n, output, s[1], s[2], s[3], s[4], s[5], s[6], s[7], str(dataset).replace("'", '"'),
+                          imcode,
+                          commentstr)
 
         # Called to flag a data entry
+
     @cherrypy.expose()
     def flag(self, num='', match='', flagval=0):
         if not (num.isdigit() and match.isdigit()):
@@ -2478,26 +2485,24 @@ class ScoutServer(object):
         cursor = conn.cursor()
 
         entries = cursor.execute('SELECT * FROM scout WHERE d0 = ? AND flag=0 ORDER BY d1 DESC', (n,)).fetchall()
-        s = {'autogears': 0, 'teleopgears': 0, 'geardrop': 0, 'autoballs': 0, 'teleopballs': 0, 'end': 0, 'apr': 0}
+        s = {'autoswitch': 0, 'autoscale': 0, 'teleswitch': 0, 'telescale': 0, 'teleexch': 0, 'end': 0, 'defense': 0}
         apr = 0
         # Iterate through all entries (if any exist) and sum all categories
         if entries:
             for e in entries:
-                s['autogears'] = max(s['autogears'], e[4])
-                s['teleopgears'] = max(s['teleopgears'], e[12])
-                s['autoballs'] = max(s['autoballs'], (e[6] / 3 + e[7]))
-                s['teleopballs'] = max(s['teleopballs'], (e[14] / 9 + e[15] / 3))
-                s['geardrop'] = max(s['geardrop'], e[13])
-                s['end'] = max(s['end'], e[16] * 50)
-                s['apr'] = max(s['apr'], (
-                    int(s['autogears'] + s['teleopgears'] + s['autoballs'] + s['teleopballs'] + s['end'] + 0.5)))
-
+                s['autoswitch'] = max(s['autoswitch'], e[2])
+                s['autoscale'] = max(s['autoscale'], e[3])
+                s['teleswitch'] = max(s['teleswitch'], e[7])
+                s['telescale'] = max(s['telescale'], e[8])
+                s['teleexch'] = max(s['teleexch'], e[9])
+                s['end'] = max(s['end'], e[12])
+                s['defense'] = max(s['defense'], e[15])
         for key, val in s.items():
             s[key] = round(val, 2)
         # replace the data entry with a new one
-        cursor.execute('DELETE FROM maxes WHERE team=?', (n,))
-        cursor.execute('INSERT INTO maxes VALUES (?,?,?,?,?,?,?,?)', (
-            n, s['apr'], s['autogears'], s['teleopgears'], s['geardrop'], s['autoballs'], s['teleopballs'], s['end']))
+            cursor.execute('DELETE FROM maxes WHERE team=?', (n,))
+            cursor.execute('INSERT INTO maxes VALUES (?,?,?,?,?,?,?,?)', (
+                n, s['autoswitch'], s['autoscale'], s['teleswitch'], s['telescale'], s['teleexch'], s['end'], s['defense']))
         conn.commit()
         conn.close()
 

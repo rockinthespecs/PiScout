@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c7564190-12f6-47a6-9c4b-db727eb7fdbf" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/2017dar_matches.json" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data_.db" afterPath="$PROJECT_DIR$/data_.db" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/event.py" afterPath="$PROJECT_DIR$/event.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/piscout.py" afterPath="$PROJECT_DIR$/piscout.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server.py" afterPath="$PROJECT_DIR$/server.py" />
     </list>
@@ -32,7 +29,7 @@
       <file leaf-file-name="upload.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/upload.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
+            <state relative-caret-position="84">
               <caret line="6" column="40" lean-forward="false" selection-start-line="6" selection-start-column="40" selection-end-line="6" selection-end-column="40" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
@@ -44,8 +41,8 @@
       <file leaf-file-name="server.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="416">
-              <caret line="2440" column="37" lean-forward="true" selection-start-line="2440" selection-start-column="37" selection-end-line="2440" selection-end-column="37" />
+            <state relative-caret-position="210">
+              <caret line="1767" column="22" lean-forward="true" selection-start-line="1767" selection-start-column="22" selection-end-line="1767" selection-end-column="22" />
               <folding>
                 <element signature="e#81466#81481#0" expanded="true" />
               </folding>
@@ -56,7 +53,7 @@
       <file leaf-file-name="builtins.py" pinned="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/.PyCharmCE2017.1/system/python_stubs/-1120166012/builtins.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="282">
+            <state relative-caret-position="107331">
               <caret line="5111" column="8" lean-forward="false" selection-start-line="5111" selection-start-column="8" selection-end-line="5111" selection-end-column="8" />
               <folding />
             </state>
@@ -66,8 +63,8 @@
       <file leaf-file-name="piscout.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/piscout.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-159">
-              <caret line="54" column="14" lean-forward="true" selection-start-line="54" selection-start-column="14" selection-end-line="54" selection-end-column="14" />
+            <state relative-caret-position="2478">
+              <caret line="129" column="45" lean-forward="true" selection-start-line="129" selection-start-column="45" selection-end-line="129" selection-end-column="45" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -89,11 +86,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>db</find>
-      <find>8001</find>
-      <find>800</find>
-      <find>database_</find>
-      <find>database</find>
       <find>8000</find>
       <find>datapath</find>
       <find>database_ex</find>
@@ -119,6 +111,11 @@
       <find>submit</find>
       <find>print</find>
       <find>calcav</find>
+      <find>upload</find>
+      <find>graph</find>
+      <find>calcmaxes</find>
+      <find>max</find>
+      <find>compare</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -157,6 +154,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -172,7 +170,6 @@
         </subPane>
       </pane>
       <pane id="Scratches" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -300,7 +297,7 @@
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2015625" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16458334" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -368,13 +365,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/2017dar_matches.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16254">
-          <caret line="774" column="8" lean-forward="false" selection-start-line="774" selection-start-column="8" selection-end-line="774" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/2017dar_matches.json" />
     <entry file="file://$PROJECT_DIR$/piscout.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="378">
@@ -428,13 +419,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/2017dar_matches.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16254">
-          <caret line="774" column="8" lean-forward="false" selection-start-line="774" selection-start-column="8" selection-end-line="774" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/2017dar_matches.json" />
     <entry file="file://$PROJECT_DIR$/piscout.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="609">
@@ -488,13 +473,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/2017dar_matches.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16254">
-          <caret line="774" column="8" lean-forward="false" selection-start-line="774" selection-start-column="8" selection-end-line="774" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/2017dar_matches.json" />
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
@@ -548,13 +527,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/2017dar_matches.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16254">
-          <caret line="774" column="8" lean-forward="false" selection-start-line="774" selection-start-column="8" selection-end-line="774" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/2017dar_matches.json" />
     <entry file="file://$PROJECT_DIR$/piscout.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
@@ -608,13 +581,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/2017dar_matches.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16254">
-          <caret line="774" column="8" lean-forward="false" selection-start-line="774" selection-start-column="8" selection-end-line="774" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/2017dar_matches.json" />
     <entry file="file://$PROJECT_DIR$/piscout.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="840">
@@ -668,13 +635,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/2017dar_matches.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16254">
-          <caret line="774" column="8" lean-forward="false" selection-start-line="774" selection-start-column="8" selection-end-line="774" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/2017dar_matches.json" />
     <entry file="file://$PROJECT_DIR$/upload.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -719,13 +680,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/2017dar_matches.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3073">
-          <caret line="774" column="8" lean-forward="false" selection-start-line="774" selection-start-column="8" selection-end-line="774" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/2017dar_matches.json" />
     <entry file="file://$USER_HOME$/.PyCharmCE2017.1/system/python_stubs/-1120166012/_sqlite3.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="269">
@@ -735,7 +690,7 @@
     </entry>
     <entry file="file://$USER_HOME$/.PyCharmCE2017.1/system/python_stubs/-1120166012/builtins.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="282">
+        <state relative-caret-position="107331">
           <caret line="5111" column="8" lean-forward="false" selection-start-line="5111" selection-start-column="8" selection-end-line="5111" selection-end-column="8" />
           <folding />
         </state>
@@ -759,7 +714,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/upload.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
+        <state relative-caret-position="84">
           <caret line="6" column="40" lean-forward="false" selection-start-line="6" selection-start-column="40" selection-end-line="6" selection-end-column="40" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
@@ -769,8 +724,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/piscout.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-159">
-          <caret line="54" column="14" lean-forward="true" selection-start-line="54" selection-start-column="14" selection-end-line="54" selection-end-column="14" />
+        <state relative-caret-position="2478">
+          <caret line="129" column="45" lean-forward="true" selection-start-line="129" selection-start-column="45" selection-end-line="129" selection-end-column="45" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
@@ -779,8 +734,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/server.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="416">
-          <caret line="2440" column="37" lean-forward="true" selection-start-line="2440" selection-start-column="37" selection-end-line="2440" selection-end-column="37" />
+        <state relative-caret-position="210">
+          <caret line="1767" column="22" lean-forward="true" selection-start-line="1767" selection-start-column="22" selection-end-line="1767" selection-end-column="22" />
           <folding>
             <element signature="e#81466#81481#0" expanded="true" />
           </folding>
