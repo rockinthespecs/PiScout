@@ -2576,16 +2576,13 @@ conf = {
         'tools.staticdir.dir': './public'
     },
     'global': {
-        'server.socket_port': 8000
+        'server.socket_host': '0.0.0.0',
+        'server.socket_port': 80
     }
 }
 
 # start method only to be used on the local version
-def start():
-    cherrypy.quickstart(ScoutServer(), '/', conf)
 
-
-# the following is run on the real server
 '''
 
 conf = {
@@ -2605,3 +2602,9 @@ conf = {
 
 cherrypy.quickstart(ScoutServer(), '/', conf)
 '''
+def start():
+    cherrypy.quickstart(ScoutServer(), '/', conf)
+
+
+# the following is run on the real server
+
