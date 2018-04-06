@@ -46,7 +46,6 @@ class PiScout:
     # Opens the GUI, preparing the data for submission
 
     def submit(self):
-        print(self.data)
         if self.data[1] == 0:
             print("Found an empty match, skipping")
             self.data = []
@@ -69,8 +68,6 @@ class PiScout:
         self.labels = ["Team", "Match", "Auto Switch", "Auto Scale", "Auto Exchange", "Auto Dropped", "Auto Cross",
                   "Tele Switch", "Tele Scale", "Tele Exchange", "Tele Dropped", "Tele Opp Switch", "Climb", "Ramp",
                   "Climbed a Robot", "Defense", "Defended", "Notes"]
-        print(len(self.labels))
-        print(len(self.data))
         assert len(self.labels) == len(self.data)
         for a in range(len(self.data)):
             output += self.labels[a] + "=" + str(self.data[a]) + '\n'
@@ -106,7 +103,7 @@ class PiScout:
         with open("queue.txt", "a+") as file:
             file.write(str(self.data) + '\n')
         plt.close()
-        requests.post("http://127.0.0.1:8000/submit", data={'event': server.CURRENT_EVENT, 'data': str(self.data)})
+        requests.post("http://127.0.0.1:80/submit", data={'event': server.CURRENT_EVENT, 'data': str(self.data)})
 
     # Invoked by the "Upload Data" button
     # Uploads all data (including queue) to the online database
@@ -116,15 +113,15 @@ class PiScout:
         print("Attempting upload to server")
 
         try:  # post it to piscout's ip address
-            requests.post("http://34.233.196.133/submit", data={'data': str(self.data)})
+            requests.post("http://35.173.67.212/submit", data={'data': str(self.data)})
             print("Uploading this match was successful")
             if os.path.isfile('queue.txt'):
                 with open("queue.txt", "r") as file:
                     for line in file:
-                        requests.post("http://34.233.196.133/submit", data={'event': server.CURRENT_EVENT, 'data': line})
+                        requests.post("http://35.173.67.212/submit", data={'event': server.CURRENT_EVENT, 'data': line})
                         print("Uploaded an entry from the queue")
                 os.remove('queue.txt')
-            requests.post("http://127.0.0.1:8000/submit", data={'event': server.CURRENT_EVENT, 'data': str(self.data)})
+            requests.post("http://127.0.0.1:80/submit", data={'event': server.CURRENT_EVENT, 'data': str(self.data)})
         except:
             print("Failed miserably")
             r = self.message("Upload Failed",

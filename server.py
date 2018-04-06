@@ -1641,7 +1641,7 @@ from statistics import mode
 
 # Update this value before every event
 # Use the event codes given by thebluealliance
-CURRENT_EVENT = '2018SE'
+CURRENT_EVENT = '2018cthar'
 DEFAULT_MODE = 'averages'
 
 
@@ -1688,7 +1688,7 @@ class ScoutServer(object):
         <html>
             <head>
                 <title>PiScout</title>
-                <link href="http://fonts.googleapis.com/css?family=Chau+Philomene+One" rel="stylesheet" type="text/css">
+                <link href="<link href="https://fonts.googleapis.com/css?family=Oxygen" rel="stylesheet" type="text/css">
                 <link href="./static/css/style.css" rel="stylesheet">
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
                 <script>
@@ -1732,6 +1732,7 @@ class ScoutServer(object):
                         <select class="fieldsm" name="e">
                           <option id="2018water" value="2018water">Waterbury District</option>
                           <option id="2018SE" value = "2018SE">SE CT District</option>
+                          <option id="2018test" value = "2018test">Test</option>
                         </select>
                         <button class="submit" type="submit">Submit</button>
                     </form>
@@ -1879,7 +1880,7 @@ class ScoutServer(object):
         <html>
             <head>
                 <title>{0} | PiScout</title>
-                <link href="http://fonts.googleapis.com/css?family=Chau+Philomene+One" rel="stylesheet" type="text/css">
+                <link href="https://fonts.googleapis.com/css?family=Oxygen" rel="stylesheet" type="text/css">
                 <link href="/static/css/style.css" rel="stylesheet">
                 <script type="text/javascript" src="/static/js/amcharts.js"></script>
                 <script type="text/javascript" src="/static/js/serial.js"></script>
@@ -2046,10 +2047,6 @@ class ScoutServer(object):
                 <h2><a style="color: #B20000" href='/'>PiScout Database</a></h2>
                 <br><br>
                 <div style="text-align:center;">
-                    <div id="apr">
-                        <p style="font-size: 200%; margin: 0.65em; line-height: 0.1em">APR</p>
-                        <p style="font-size: 400%; line-height: 0em">{2}</p>
-                    </div>
                     <div id="stats">
                         <p class="statbox" style="font-weight:bold">Average match:</p>
                         <p class="statbox">Auto Switch: {3}</p>
@@ -2114,7 +2111,7 @@ class ScoutServer(object):
             <html>
                 <head>
                     <title>PiScout</title>
-                    <link href="http://fonts.googleapis.com/css?family=Chau+Philomene+One" rel="stylesheet" type="text/css">
+                    <link href="https://fonts.googleapis.com/css?family=Oxygen" rel="stylesheet" type="text/css">
                     <link href="/static/css/style.css" rel="stylesheet">
                 </head>
                 <body>
@@ -2193,7 +2190,7 @@ class ScoutServer(object):
             <html>
                 <head>
                     <title>PiScout</title>
-                    <link href="http://fonts.googleapis.com/css?family=Chau+Philomene+One" rel="stylesheet" type="text/css">
+                    <link href="https://fonts.googleapis.com/css?family=Oxygen" rel="stylesheet" type="text/css">
                     <link href="/static/css/style.css" rel="stylesheet">
                 </head>
                 <body>
@@ -2273,7 +2270,7 @@ class ScoutServer(object):
             <html>
                 <head>
                     <title>PiScout</title>
-                    <link href="http://fonts.googleapis.com/css?family=Chau+Philomene+One" rel="stylesheet" type="text/css">
+                    <link href="https://fonts.googleapis.com/css?family=Oxygen" rel="stylesheet" type="text/css">
                     <link href="/static/css/style.css" rel="stylesheet">
                 </head>
                 <body>
@@ -2364,7 +2361,7 @@ class ScoutServer(object):
                 <html>
                 <head>
                     <title>PiScout</title>
-                    <link href="http://fonts.googleapis.com/css?family=Chau+Philomene+One" rel="stylesheet" type="text/css">
+                    <link href="https://fonts.googleapis.com/css?family=Oxygen" rel="stylesheet" type="text/css">
                     <link href="/static/css/style.css" rel="stylesheet">
                 </head>
                 <body>
@@ -2446,7 +2443,7 @@ class ScoutServer(object):
             for e in entries:
                 s['autoswitch'] += e[2]
                 s['autoscale'] += e[3]
-                s['teleswitch'] += e[7]
+                s['teleswitch'] += (e[7] + e[11])/2
                 s['telescale'] += e[8]
                 s['teleexch'] += e[9]
                 if e[12] or e[14]:
@@ -2455,7 +2452,6 @@ class ScoutServer(object):
                     s['end'] += 5
                 s['defense'] += e[15]
 
-            print(s['end'])
             # take the average (divide by number of entries)
             for key,val in s.items():
                 s[key] = round(val/len(entries), 2)
@@ -2576,7 +2572,7 @@ conf = {
         'tools.staticdir.dir': './public'
     },
     'global': {
-        'server.socket_host': '0.0.0.0',
+        'server.socket_host': '127.0.0.1',
         'server.socket_port': 80
     }
 }
@@ -2595,7 +2591,7 @@ conf = {
                  'tools.staticdir.dir': './public'
          },
         'global': {
-                'server.socket_host': '0.0.0.0',
+                'server.socket_host': '127.0.0.1',
                 'server.socket_port': 80
         }
 }
