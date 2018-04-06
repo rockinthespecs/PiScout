@@ -1732,7 +1732,6 @@ class ScoutServer(object):
                         <select class="fieldsm" name="e">
                           <option id="2018water" value="2018water">Waterbury District</option>
                           <option id="2018SE" value = "2018SE">SE CT District</option>
-                          <option id="2018test" value = "2018test">Test</option>
                         </select>
                         <button class="submit" type="submit">Submit</button>
                     </form>
