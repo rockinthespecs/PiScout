@@ -1,1 +1,1 @@
-CURRENT_EVENT = '2018cthar'
+CURRENT_EVENT = '2018necmp'

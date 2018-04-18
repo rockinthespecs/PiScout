@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="c7564190-12f6-47a6-9c4b-db727eb7fdbf" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/event.py" afterPath="$PROJECT_DIR$/event.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/css/style.css" afterPath="$PROJECT_DIR$/public/css/style.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server.py" afterPath="$PROJECT_DIR$/server.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -19,7 +21,7 @@
         <entry file="file://$PROJECT_DIR$/event.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
-              <caret line="0" column="26" lean-forward="false" selection-start-line="0" selection-start-column="26" selection-end-line="0" selection-end-column="26" />
+              <caret line="0" column="26" lean-forward="false" selection-start-line="0" selection-start-column="17" selection-end-line="0" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -28,8 +30,8 @@
       <file leaf-file-name="upload.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/upload.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="378">
-              <caret line="18" column="28" lean-forward="true" selection-start-line="18" selection-start-column="28" selection-end-line="18" selection-end-column="28" />
+            <state relative-caret-position="336">
+              <caret line="18" column="28" lean-forward="false" selection-start-line="18" selection-start-column="28" selection-end-line="18" selection-end-column="28" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -40,10 +42,10 @@
       <file leaf-file-name="server.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="248">
-              <caret line="1733" column="86" lean-forward="false" selection-start-line="1733" selection-start-column="86" selection-end-line="1733" selection-end-column="86" />
+            <state relative-caret-position="437">
+              <caret line="141" column="38" lean-forward="false" selection-start-line="141" selection-start-column="38" selection-end-line="141" selection-end-column="38" />
               <folding>
-                <element signature="e#81466#81481#0" expanded="true" />
+                <element signature="e#0#15#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -52,8 +54,8 @@
       <file leaf-file-name="piscout.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/piscout.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="269">
-              <caret line="18" column="57" lean-forward="false" selection-start-line="18" selection-start-column="55" selection-end-line="18" selection-end-column="57" />
+            <state relative-caret-position="105">
+              <caret line="16" column="21" lean-forward="false" selection-start-line="16" selection-start-column="17" selection-end-line="16" selection-end-column="21" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -65,7 +67,7 @@
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="609">
-              <caret line="29" column="13" lean-forward="true" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
+              <caret line="29" column="13" lean-forward="false" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -75,36 +77,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>main table</find>
-      <find>dp</find>
-      <find>DEFAULT</find>
-      <find>autoballs</find>
-      <find>scout</find>
-      <find>Waterbury</find>
-      <find>2018water</find>
-      <find>submit</find>
-      <find>calcav</find>
-      <find>upload</find>
-      <find>graph</find>
-      <find>calcmaxes</find>
-      <find>max</find>
-      <find>compare</find>
-      <find>24</find>
       <find>127</find>
       <find>http</find>
       <find>34</find>
       <find>index</find>
       <find>server</find>
-      <find>calcavg</find>
       <find>80</find>
       <find>print</find>
       <find>apr</find>
       <find>matches</find>
       <find>current</find>
-      <find>2018</find>
       <find>google</find>
       <find>test</find>
       <find>cthar</find>
+      <find>s[</find>
+      <find>def team</find>
+      <find>2018</find>
+      <find>gears</find>
+      <find>gear</find>
+      <find>averages</find>
+      <find>calcmax</find>
+      <find>calcavg</find>
+      <find>calcmaxes</find>
+      <find>scout</find>
+      <find>maxes</find>
+      <find>defense</find>
+      <find>comm</find>
+      <find>comments</find>
+      <find>Submit</find>
+      <find>compare</find>
+      <find>total</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -144,6 +146,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -158,12 +162,10 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../ServerHelloWorld/ServerHelloWorld" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -378,7 +380,7 @@
         <state relative-caret-position="7602">
           <caret line="371" column="61" lean-forward="false" selection-start-line="371" selection-start-column="61" selection-end-line="371" selection-end-column="61" />
           <folding>
-            <element signature="e#81466#81481#0" expanded="true" />
+            <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -432,7 +434,7 @@
         <state relative-caret-position="7791">
           <caret line="371" column="61" lean-forward="false" selection-start-line="371" selection-start-column="61" selection-end-line="371" selection-end-column="61" />
           <folding>
-            <element signature="e#81466#81481#0" expanded="true" />
+            <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -484,7 +486,7 @@
         <state relative-caret-position="7791">
           <caret line="371" column="61" lean-forward="true" selection-start-line="371" selection-start-column="61" selection-end-line="371" selection-end-column="61" />
           <folding>
-            <element signature="e#81466#81481#0" expanded="true" />
+            <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -540,7 +542,7 @@
         <state relative-caret-position="2835">
           <caret line="144" column="0" lean-forward="false" selection-start-line="144" selection-start-column="0" selection-end-line="144" selection-end-column="0" />
           <folding>
-            <element signature="e#81466#81481#0" expanded="true" />
+            <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -602,7 +604,7 @@
         <state relative-caret-position="1071">
           <caret line="51" column="28" lean-forward="false" selection-start-line="51" selection-start-column="28" selection-end-line="51" selection-end-column="28" />
           <folding>
-            <element signature="e#81466#81481#0" expanded="true" />
+            <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -631,7 +633,7 @@
         <state relative-caret-position="1071">
           <caret line="51" column="28" lean-forward="true" selection-start-line="51" selection-start-column="28" selection-end-line="51" selection-end-column="28" />
           <folding>
-            <element signature="e#81466#81481#0" expanded="true" />
+            <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -675,25 +677,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../ServerHelloWorld/ServerHelloWorld/server.py">
+    <entry file="file://$PROJECT_DIR$/../ServerHelloWorld/ServerHelloWorld/server.py" />
+    <entry file="file://$PROJECT_DIR$/upload.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="21">
-          <caret line="1" column="6" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/event.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="26" lean-forward="false" selection-start-line="0" selection-start-column="26" selection-end-line="0" selection-end-column="26" />
-          <folding />
+        <state relative-caret-position="336">
+          <caret line="18" column="28" lean-forward="false" selection-start-line="18" selection-start-column="28" selection-end-line="18" selection-end-column="28" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/piscout.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="269">
-          <caret line="18" column="57" lean-forward="false" selection-start-line="18" selection-start-column="55" selection-end-line="18" selection-end-column="57" />
+        <state relative-caret-position="105">
+          <caret line="16" column="21" lean-forward="false" selection-start-line="16" selection-start-column="17" selection-end-line="16" selection-end-column="21" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
@@ -703,27 +701,25 @@
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="609">
-          <caret line="29" column="13" lean-forward="true" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
+          <caret line="29" column="13" lean-forward="false" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/upload.py">
+    <entry file="file://$PROJECT_DIR$/event.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="18" column="28" lean-forward="true" selection-start-line="18" selection-start-column="28" selection-end-line="18" selection-end-column="28" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="0">
+          <caret line="0" column="26" lean-forward="false" selection-start-line="0" selection-start-column="17" selection-end-line="0" selection-end-column="26" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/server.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="248">
-          <caret line="1733" column="86" lean-forward="false" selection-start-line="1733" selection-start-column="86" selection-end-line="1733" selection-end-column="86" />
+        <state relative-caret-position="437">
+          <caret line="141" column="38" lean-forward="false" selection-start-line="141" selection-start-column="38" selection-end-line="141" selection-end-column="38" />
           <folding>
-            <element signature="e#81466#81481#0" expanded="true" />
+            <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>
